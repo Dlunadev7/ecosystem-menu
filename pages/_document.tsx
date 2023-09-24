@@ -3,7 +3,7 @@ import { ColorSchemeScript } from "@mantine/core";
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang="es-AR">
       <Head>
         <ColorSchemeScript />
       </Head>
