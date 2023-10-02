@@ -3,10 +3,13 @@ import { ArrowRightIcon } from '@radix-ui/react-icons'
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { LANDING_TEXT } from "../utils/landing.text";
 import { useMediaQuery } from "@mantine/hooks";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { RouteEnum } from "@/shared/enums";
 
 export default function LandingPage() {
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
-
+  const router = useRouter();
   return (
     <AppShell>
       <AppShell.Header
@@ -21,20 +24,22 @@ export default function LandingPage() {
           <Image maw={100} width="100px" src="https://store-ecosystem.vercel.app/statics/imagotype.svg" alt="" />
           <Group>
             {!isMobile && (
-              <Button size="sm" variant="outline">
+              <Button size="sm" variant="outline" onClick={() => router.push("auth/sign-in")}>
                 Ingresa
               </Button>
             )}
-            <Button
-              size="sm"
-              rightSection={(
-                <ThemeIcon size="lg">
-                  <IconBrandWhatsapp stroke={1} />
-                </ThemeIcon>
-              )}
-            >
-              Contactanos
-            </Button>
+            <Link href={"https://linktr.ee/ecosystem.com.ar"} target="_blank">
+              <Button
+                size="sm"
+                rightSection={(
+                  <ThemeIcon size="lg">
+                    <IconBrandWhatsapp stroke={1} />
+                  </ThemeIcon>
+                )}
+              >
+                Contactanos
+              </Button>
+            </Link>
             </Group>
         </Flex>
       </AppShell.Header>
@@ -54,6 +59,7 @@ export default function LandingPage() {
                   <ArrowRightIcon />
                 </ThemeIcon>
               )}
+              onClick={() => router.push("auth/sign-up")}
             >
               Registrate, es gratis.
             </Button>
@@ -121,6 +127,35 @@ export default function LandingPage() {
         </Accordion>
 
       </AppShell.Main>
+      <AppShell.Footer mx="auto" maw={980} mt={100} p={16} withBorder={false} pos="static" style={{borderTop: "1px solid #00000020"}}>
+        <Flex
+          justify="space-between"
+          wrap="wrap"
+          columnGap={32}
+          rowGap={32}
+        >
+          <Image
+            src="/statics/imagotype.svg"
+            width={100}
+            height={28}
+            alt="ecosystem logo"
+          />
+          <Flex gap={16} wrap="wrap">
+            <Link href={RouteEnum.SIGN_IN}>
+              <Text fz="xs">Ingresá</Text>
+            </Link>
+            <Link href="#">
+              <Text fz="xs">{`FAQ\'s`}</Text>
+            </Link>
+            <Link href={RouteEnum.PRIVACY_POLICIES}>
+              <Text fz="xs">Política de privacidad</Text>
+            </Link>
+            <Link href={RouteEnum.TERMS_AND_CONDITIONS}>
+              <Text fz="xs">Términos y condiciones</Text>
+            </Link>
+          </Flex>
+        </Flex>
+      </AppShell.Footer>
     </AppShell>
   );
 }
