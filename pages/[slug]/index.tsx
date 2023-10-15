@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { Container, Paper, Skeleton, Stack, Text, Title, useMantineTheme } from "@mantine/core";
+import { Container, Paper, Skeleton, Stack, Text, Title, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -9,20 +9,18 @@ import { useStore } from "@/shared/hooks/stores/store";
 import { RandomAvatar } from "@/shared/utils/avatars";
 import { Head, PageUp, Splash, ProductList } from "@components";
 import { ProductEntity } from "@ecosystem-ar/sdk";
-import { BackgroundColor } from "@/shared/utils/theme/background.util";
-// import { useTheme } from "@/context/theme/theme.contex";
+import { useTheme } from "@/context/theme/theme.context";
 
 const ProductPreview = dynamic(() => import('@/components/modals/product-preview/product-preview.component'));
 
 export default function StoreScreen() {
   const { query } = useRouter();
-  /**
-   * 
-   * @todo Revisar este codigo comentado.
-   */
-  
-  // const [themeUpdated, setThemeUpdated] = useState(false);
-  // const { updateThemePreferences } = useTheme();
+  const { setColorScheme } = useMantineColorScheme();
+
+  // Revisa que el theme en cuestion no se actualice infinitamente (loop de renders)
+  const [themeUpdated, setThemeUpdated] = useState(false);
+
+  const { updateThemePreferences } = useTheme();
 
   const theme = useMantineTheme();
   const { store, loading_store } = useStore(query.slug as string);
@@ -41,22 +39,24 @@ export default function StoreScreen() {
     return store ? (<ProductList store={store.id} onSelect={onPreviewOpen} />) : null;
   }, [store]);
 
-  // useEffect(() => {
-  //   if (!themeUpdated && store.theme) {
-  //     setThemeUpdated(true);
-  //     updateThemePreferences({
-  //       primaryColor: store.theme.primary_color,
-  //       colorScheme: store.theme.schema
-  //     });
-  //   }
-  // }, [store])
+  useEffect(() => {
+    if (!themeUpdated && store && store.theme) {
+      const { color } = store.theme;
+      setThemeUpdated(true);
+      updateThemePreferences({
+        other: {
+          ...store.theme,
+        },
+        primaryColor: color.primary,
+      });
+      setColorScheme(color.scheme);
+    }
+  }, [store])
 
   if (!loading_store && !store) {
     return <Splash notfound={!store} />;
   }
 
-  // const background_color = BackgroundColor(theme.);
-  
   return (
     <Container px={0} maw={980} style={{ margin: 'auto' }}>
       <Head title={`${store?.name || "Menú"}`} description={`${store?.description || 'Menu'}`} />

@@ -17,7 +17,7 @@ import { BackgroundColor } from "@/shared/utils/theme/background.util";
 export function ProductList({ store, onSelect } : ProductListProps) {
   const router = useRouter();
 
-  // const { colorScheme } = useMantineTheme();
+  const theme = useMantineTheme();
   const [defaultTab, setDefaultTab] = useState("");
 
   const { products, loading_products } = useProducts(store);
@@ -58,16 +58,16 @@ export function ProductList({ store, onSelect } : ProductListProps) {
     );
   }
 
-  // const color = BackgroundColor(colorScheme);
+  const backgroundColor = BackgroundColor(theme.other.scheme);
 
   return defaultTab ? (
     <Tabs
       variant="pills"
       radius="xl"
       defaultValue={defaultTab}
-      // onTabChange={onTabChange}
+      onChange={onTabChange}
     >
-      <ScrollArea w="100%" type="never" style={{ position: "sticky", top: 0, zIndex: 1 }}>
+      <ScrollArea w="100%" type="never" style={{ position: "sticky", top: 0, zIndex: 1, backgroundColor }}>
         <Tabs.List py={16} px={16} style={{ flexWrap: 'nowrap' }}>
           {loading_categories ? (
             <SkeletonList height={36} amount={6} />
