@@ -3,6 +3,8 @@ import React, { ReactElement, ReactNode, useContext, useMemo, useState } from 'r
 
 import { MantineThemeOverride } from '@mantine/core';
 
+import { theme as default_theme } from '../../theme';
+
 type ThemeContext = {
   theme: MantineThemeOverride,
   updateThemePreferences: (theme: MantineThemeOverride) => void;
@@ -11,29 +13,13 @@ type ThemeContext = {
 const Context = React.createContext({} as ThemeContext);
 
 export function ThemeContext({ children }: { children: ReactElement | ReactElement[] | ReactNode }) {
-  const [theme, setTheme] = useState<MantineThemeOverride>({
-    black: '#242424',
-    defaultRadius: "md",
-    primaryColor: 'dark',
-    components: {
-      Container: {
-        styles: {
-          root: {
-            minHeight: '100vh',
-            paddingBottom: 200
-          }
-        }
-      }
-    }
-  });
+  const [theme, setTheme] = useState<MantineThemeOverride>(default_theme);
 
   const updateThemePreferences = (theme_preferences: MantineThemeOverride) => {
     setTheme(theme_preferences);
   }
 
-  const MemoizedValues = useMemo(() => ({
-    theme, updateThemePreferences
-  }), [theme])
+  const MemoizedValues = useMemo(() => ({ theme, updateThemePreferences }), [theme]);
 
   return (
     <Context.Provider value={MemoizedValues}>

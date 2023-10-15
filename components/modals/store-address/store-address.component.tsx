@@ -1,10 +1,12 @@
+import { useState } from "react";
+
 import { useSDK } from "@/shared/api";
 import { NOTIFICATIONS } from "@/shared/constants/notifications";
 import { StoreEntity, AddressType } from "@ecosystem-ar/sdk";
+
 import { Button, Group, LoadingOverlay, Modal, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
-import { useState } from "react";
 
 // const Map = dynamic(
 //   () => import('../../../map/map.component'),

@@ -7,12 +7,12 @@ import { AppShellProps, MantineProvider } from "@mantine/core";
 import { AuthContext } from "@/context/auth/auth.context";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from '@mantine/notifications';
-import { Footer } from '@components';
 import { ThemeContext, useTheme } from '@/context/theme/theme.context';
 
 
 export function App({ Component, pageProps }: any) {
   const { theme } = useTheme();
+
   return (
     <MantineProvider theme={theme} >
       <Head>
@@ -95,12 +95,12 @@ export function App({ Component, pageProps }: any) {
         />
       </Head>
       <AuthContext>
-          <ModalsProvider>
-            <Notifications position="top-right" />
-            <Component {...pageProps} />
-          </ModalsProvider>
-        </AuthContext>
-      </MantineProvider>
+        <ModalsProvider>
+          <Notifications position="top-right" />
+          <Component {...pageProps} />
+        </ModalsProvider>
+      </AuthContext>
+    </MantineProvider>
   );
 }
 

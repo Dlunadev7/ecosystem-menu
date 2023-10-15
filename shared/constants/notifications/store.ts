@@ -18,7 +18,6 @@ export const STORE = {
     color: 'red',
     title: 'No pudimos crear tu tienda',
     message: 'Inténtalo más tarde y si el problema continúa, contáctanos.',
-    autoClose: true,
     loading: false,
   },
   STORE_PENDING_VALIDATION: {

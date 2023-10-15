@@ -20,7 +20,7 @@ function ProductPreview({ product, onRequestClose }: ProductPreviewProps) {
 
   const has_images = Boolean(product.images.length);
   const price = Number(product.price?.amount).toFixed(2);
-  console.log(has_images)
+
   return (
     <Modal.Root
       padding={0}
@@ -43,7 +43,9 @@ function ProductPreview({ product, onRequestClose }: ProductPreviewProps) {
                   width: rem(12),
                   height: rem(4),
                   transition: 'width 250ms ease',
-        
+                  /**
+                   * @todo find a way to make this work
+                   */
                   // '&[data-active]': {
                   //   width: rem(40),
                   // },
