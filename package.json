@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ecosystem-ar/sdk": "^0.1.6",
+    "@ecosystem-ar/sdk": "^0.2.6",
     "@emotion/react": "^11.10.6",
     "@emotion/server": "^11.10.0",
     "@mantine/carousel": "^7.1.0",
