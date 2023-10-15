@@ -28,7 +28,7 @@ export function FileSelector({ media = [], limit = 5, onRemove, onSelect, size =
         </Carousel.Slide>
       ))}
       <Carousel.Slide>
-        <FileButton onChange={onSelect} accept="image/png,image/jpeg,image/jpg">
+        <FileButton onChange={onSelect} accept="image/png,image/jpeg,image/jpg,image/webp">
           {(props) => (
             <Button {...props} variant="outline" disabled={limit_exceeded} style={{ width: transformed_height, height: transformed_height }}>
               <IconPlus />
