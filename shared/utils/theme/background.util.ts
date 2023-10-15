@@ -1,11 +1,7 @@
 import { MantineColorScheme, useMantineTheme } from "@mantine/core";
 
-export function BackgroundColor(scheme: MantineColorScheme){
-    /**
-   * 
-   * @todo Revisar todo este codigo.
-   */
+export function BackgroundColor(scheme: MantineColorScheme = 'light'){
   const theme = useMantineTheme();
 
-  return scheme === 'light' ? theme.colors.white[0] : theme.colors.dark[7];
+  return scheme === 'light' ? theme.white : theme.colors.dark[7];
 }
