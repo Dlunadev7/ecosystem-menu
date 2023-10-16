@@ -5,6 +5,8 @@ import { AspectRatio, Modal, Space, Stack, Text, Title, rem } from "@mantine/cor
 import { Carousel, Embla, useAnimationOffsetEffect } from "@mantine/carousel";
 
 import { ProductPreviewProps } from "./product-preview.type";
+import product_preview from './product-preview.module.scss'
+
 
 const TRANSITION_DURATION = 200;
 function ProductPreview({ product, onRequestClose }: ProductPreviewProps) {
@@ -38,19 +40,7 @@ function ProductPreview({ product, onRequestClose }: ProductPreviewProps) {
               align="start"
               withIndicators
               withControls={false}
-              styles={{
-                indicator: {
-                  width: rem(12),
-                  height: rem(4),
-                  transition: 'width 250ms ease',
-                  /**
-                   * @todo find a way to make this work
-                   */
-                  // '&[data-active]': {
-                  //   width: rem(40),
-                  // },
-                },
-              }}
+              classNames={product_preview}
             >
               {product.images.map(({ id, uri }, index) => (
                 <Carousel.Slide key={id}>
