@@ -18,6 +18,6 @@ export { ConfirmationModal } from './modals/confirmation-modal/confirmation-moda
  */
 export { ProductPreview, Cropper };
 export { FileSelector } from './file-selector/file-selector.component';
-export { ProductList } from "./product-list/product-list.component";
 export { FileButton } from "./file-button/file-button.component";
 export { Card } from "./card/card.component";
+export { ProductListItem  } from "./product-item/product-list-item.component"

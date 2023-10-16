@@ -1,18 +1,28 @@
 import { useEffect, useMemo, useState } from "react";
-
-import { Container, MantineProvider, Paper, ScrollArea, SimpleGrid, Stack, Tabs, Text, Title, createTheme } from "@mantine/core";
-import dynamic from "next/dynamic";
 import Image from "next/image";
-import { CategoryEntity, EcosystemStoreSDK, IDType, ProductEntity, StoreEntity } from "@ecosystem-ar/sdk";
-
-import { RandomAvatar } from "@/shared/utils/avatars";
-import { Head, PageUp } from "@components";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+
+import {
+  Container,
+  MantineProvider,
+  MantineStyleProp,
+  Paper,
+  ScrollArea,
+  SimpleGrid,
+  Stack,
+  Tabs,
+  Text,
+  Title,
+  createTheme
+} from "@mantine/core";
+import { CategoryEntity, EcosystemStoreSDK, IDType, ProductEntity, StoreEntity, StoreTheme } from "@ecosystem-ar/sdk";
+
+import { Head, PageUp, ProductListItem } from "@components";
+import { RandomAvatar } from "@/shared/utils/avatars";
 import { DEFAULT_CATEGORY } from "@/shared/utils";
-import { ProductListItem } from "@/components/product-list/product-list-item.component";
 import { GRID_BREAKPOINTS } from "@/shared/constants/grid-breakpoints";
 import { BackgroundColor } from "@/shared/utils/theme/background.util";
-import { StoreTheme } from "@ecosystem-ar/sdk/build/shared";
 
 const ProductPreview = dynamic(() => import('@/components/modals/product-preview/product-preview.component'));
 
@@ -24,10 +34,9 @@ type StoreSpotlightProps = {
 }
 
 export default function StoreScreen({ store, products, categories, theme }: StoreSpotlightProps) {
-  const [productPreview, setProductPreview] = useState<ProductEntity | null>(null);
-
   const router = useRouter();
 
+  const [productPreview, setProductPreview] = useState<ProductEntity | null>(null);
   const [defaultTab, setDefaultTab] = useState("");
 
   const MemoizedTabs = useMemo(() => [...categories, DEFAULT_CATEGORY].map(({ id, name }) => (
@@ -73,6 +82,13 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
     setProductPreview(null);
   };
 
+  const listStyle: MantineStyleProp = {
+    position: "sticky", 
+    top: 0,
+    zIndex: 1,
+    backgroundColor: BackgroundColor(store.theme?.color.scheme),
+  }
+
   return (
     <MantineProvider {...(theme && theme)} forceColorScheme={store.theme?.color.scheme}>
       <Container px={0} maw={980} style={{ margin: 'auto' }}>
@@ -104,7 +120,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
 
         {defaultTab && (
           <Tabs variant="pills" radius="xl" defaultValue={defaultTab} onChange={onTabChange}>
-            <ScrollArea w="100%" type="never" style={{ position: "sticky", top: 0, zIndex: 1, backgroundColor: BackgroundColor(store.theme?.color.scheme) }}>
+            <ScrollArea w="100%" type="never" style={listStyle}>
               <Tabs.List py={16} px={16} style={{ flexWrap: 'nowrap' }}>
                 {MemoizedTabs}
               </Tabs.List>
