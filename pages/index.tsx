@@ -10,6 +10,7 @@ import { RouteEnum } from "@/shared/enums";
 export default function LandingPage() {
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const router = useRouter();
+  
   return (
     <AppShell>
       <AppShell.Header
@@ -40,7 +41,7 @@ export default function LandingPage() {
                 Contactanos
               </Button>
             </Link>
-            </Group>
+          </Group>
         </Flex>
       </AppShell.Header>
       <AppShell.Main maw={980} mx="auto" mt={100} px={16}>

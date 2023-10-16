@@ -29,12 +29,6 @@ import { VerificationStatus } from "@/shared/constants/verification-status";
 import { useSDK } from "@/shared/api";
 
 export default function SigninScreen() {
-
-  /**
-   * 
-   * @todo Revisar todo nuevamente que funcione bien!
-   */
-
   const router = useRouter();
   const tenant = useTenant();
 
@@ -50,7 +44,6 @@ export default function SigninScreen() {
   const authorization_form = useForm({
     initialValues: { code: '' }
   })
-
 
   const onAuthentication = (values: { email: string }) => {
 

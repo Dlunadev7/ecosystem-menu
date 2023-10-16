@@ -6,22 +6,16 @@ import { ProductEntity, IDType } from "@ecosystem-ar/sdk";
 
 import { GRID_BREAKPOINTS } from "@/shared/constants/grid-breakpoints";
 import { DEFAULT_CATEGORY } from "@/shared/utils";
-import { useProducts } from "@/shared/hooks/products/products";
-import { useCategories } from "@/shared/hooks/categories";
-import { SkeletonList } from "@components";
 
 import { ProductListProps } from "./product-list.types";
 import { ProductListItem } from "./product-list-item.component";
 import { BackgroundColor } from "@/shared/utils/theme/background.util";
 
-export function ProductList({ store, onSelect } : ProductListProps) {
+export function ProductList({ products, categories, onSelect } : ProductListProps) {
   const router = useRouter();
 
   const theme = useMantineTheme();
   const [defaultTab, setDefaultTab] = useState("");
-
-  const { products, loading_products } = useProducts(store);
-  const { categories, loading_categories } = useCategories(store);
 
   const MemoizedGroupedProducts = useMemo(() => {
     return products.reduce((acc, curr) => {
@@ -58,7 +52,7 @@ export function ProductList({ store, onSelect } : ProductListProps) {
     );
   }
 
-  const backgroundColor = BackgroundColor(theme.other.scheme);
+  const backgroundColor = BackgroundColor(theme.other.color?.scheme);
 
   return defaultTab ? (
     <Tabs
@@ -69,16 +63,10 @@ export function ProductList({ store, onSelect } : ProductListProps) {
     >
       <ScrollArea w="100%" type="never" style={{ position: "sticky", top: 0, zIndex: 1, backgroundColor }}>
         <Tabs.List py={16} px={16} style={{ flexWrap: 'nowrap' }}>
-          {loading_categories ? (
-            <SkeletonList height={36} amount={6} />
-          ) : MemoizedTabs}
+          {MemoizedTabs}
         </Tabs.List>
       </ScrollArea>
-      {loading_products ? (
-        <SimpleGrid p={16} spacing={0} verticalSpacing="lg" cols={GRID_BREAKPOINTS} mb={64}>
-          <SkeletonList height={140} amount={5} />
-        </SimpleGrid>
-      ) : [...categories, DEFAULT_CATEGORY].map((category) => (
+      {[...categories, DEFAULT_CATEGORY].map((category) => (
         <Tabs.Panel key={category.id} value={category.id}>
           <SimpleGrid p={16} spacing="md" verticalSpacing="lg" cols={GRID_BREAKPOINTS} mb={64}>
             {MemoizedGroupedProducts[category.id]?.map((product) => <ProductListItem key={product.id} product={product} onSelect={onSelect} />)}

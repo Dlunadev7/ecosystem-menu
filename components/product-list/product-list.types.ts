@@ -1,10 +1,11 @@
-import { IDType, ProductEntity } from "@ecosystem-ar/sdk";
+import { CategoryEntity, IDType, ProductEntity } from "@ecosystem-ar/sdk";
 
 export type SelectProduct = (product: ProductEntity) => void;
 
 export type ProductListProps = {
-  store: IDType;
-  onSelect: SelectProduct
+  products: ProductEntity[];
+  categories: CategoryEntity[];
+  onSelect: SelectProduct;
 };
 
 export type ProductGridItemProps = {

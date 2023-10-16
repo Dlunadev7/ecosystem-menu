@@ -15,7 +15,14 @@ export function ProductListItem({ product, onSelect }: ProductGridItemProps) {
     <Card onClick={() => onSelect(product)}>
       <Flex gap="sm">
         {has_images && (
-          <Image src={profile_photo} alt={`${name} photo`} width={90} height={90} style={{ borderRadius: '100%' }} priority />
+          <Image
+            src={profile_photo}
+            alt={`${name} photo`}
+            width={90}
+            height={90}
+            style={{ borderRadius: '100%' }}
+            priority
+          />
         )}
         <Stack gap={0} justify="space-between" style={{ flex: 1 }}>
           <Stack gap={4}>
