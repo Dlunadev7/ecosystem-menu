@@ -126,13 +126,16 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
             <Title ta="center" order={1} tt="capitalize">
               {store.name}
             </Title>
-            <Flex gap={8}>
+            <ScrollArea w="100%" type="never">
+              <Flex gap="xs" justify="center" align="flex-start" direction="row" wrap="nowrap" px={8}>
+
               {(store.social_networks || []).map(({ name, id, url }) => (
                 <ActionIcon component="a" href={url} radius="xl" key={id} target="_blank">
                   {SocialNetworkIcon(name, 18)}
                 </ActionIcon>
               ))}
-            </Flex>
+              </Flex>
+            </ScrollArea>
             {store.address && (
               <Text fz="xs" ta="center" tt="capitalize">
                 {`${store.address.street_name} ${store.address.street_number} | ${store.address.city}`}
