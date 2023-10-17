@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import {
   ActionIcon,
-  Container,
+  AppShell,
   Flex,
   MantineProvider,
   MantineStyleProp,
@@ -21,7 +21,7 @@ import {
 } from "@mantine/core";
 import { CategoryEntity, EcosystemStoreSDK, IDType, ProductEntity, StoreEntity } from "@ecosystem-ar/sdk";
 
-import { CartButton, Head, PageUp, ProductListItem } from "@components";
+import { CartButton, Footer, Head, PageUp, ProductListItem } from "@components";
 import { RandomAvatar } from "@/shared/utils/avatars";
 import { DEFAULT_CATEGORY } from "@/shared/utils";
 import { GRID_BREAKPOINTS } from "@/shared/constants/grid-breakpoints";
@@ -110,61 +110,66 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
 
   return (
     <MantineProvider theme={theme} forceColorScheme={store.theme?.color.scheme}>
-      <Container px={0} maw={980} style={{ margin: 'auto' }}>
-        <Head title={store.name} description={store.description} slug={store.slug} />
-        <Stack align="center" mb={64}>
-          <Paper h={100} shadow="md" radius={8} mt={64} style={{ overflow: 'hidden' }}>
-            <Image
-              width={100}
-              height={100}
-              src={store.avatar?.uri || RandomAvatar("randm")}
-              alt={`${store.name} avatar`}
-              priority
-            />
-          </Paper>
-          <Title ta="center" order={1} tt="capitalize">
-            {store.name}
-          </Title>
-          <Flex gap={8}>
-            {(store.social_networks || []).map(({ name, id, url }) => (
-              <ActionIcon component="a" href={url} radius="xl" key={id} target="_blank">
-                {SocialNetworkIcon(name, 18)}
-              </ActionIcon>
-            ))}
-          </Flex>
-          {store.address && (
-            <Text fz="xs" ta="center" tt="capitalize">
-              {`${store.address.street_name} ${store.address.street_number} | ${store.address.city}`}
-            </Text>
-          )}
-          {store.description && (
-            <Text px={8} fz="xs" ta="center">
-              {store.description}
-            </Text>
-          )}
-        </Stack>
+      <AppShell>
+        <AppShell.Main px={0} maw={980} style={{ margin: 'auto' }}>
+          <Head title={store.name} description={store.description} slug={store.slug} />
+          <Stack align="center" mb={64}>
+            <Paper h={100} shadow="md" radius={8} mt={64} style={{ overflow: 'hidden' }}>
+              <Image
+                width={100}
+                height={100}
+                src={store.avatar?.uri || RandomAvatar("randm")}
+                alt={`${store.name} avatar`}
+                priority
+              />
+            </Paper>
+            <Title ta="center" order={1} tt="capitalize">
+              {store.name}
+            </Title>
+            <Flex gap={8}>
+              {(store.social_networks || []).map(({ name, id, url }) => (
+                <ActionIcon component="a" href={url} radius="xl" key={id} target="_blank">
+                  {SocialNetworkIcon(name, 18)}
+                </ActionIcon>
+              ))}
+            </Flex>
+            {store.address && (
+              <Text fz="xs" ta="center" tt="capitalize">
+                {`${store.address.street_name} ${store.address.street_number} | ${store.address.city}`}
+              </Text>
+            )}
+            {store.description && (
+              <Text px={8} fz="xs" ta="center">
+                {store.description}
+              </Text>
+            )}
+          </Stack>
 
-        {defaultTab && (
-          <Tabs variant="pills" radius="xl" defaultValue={defaultTab} onChange={onTabChange}>
-            <ScrollArea w="100%" type="never" style={listStyle}>
-              <Tabs.List py={16} px={16} style={{ flexWrap: 'nowrap' }}>
-                {MemoizedTabs}
-              </Tabs.List>
-            </ScrollArea>
-            {[...categories, DEFAULT_CATEGORY].map((category) => (
-              <Tabs.Panel key={category.id} value={category.id}>
-                <SimpleGrid p={16} spacing="md" verticalSpacing="lg" cols={GRID_BREAKPOINTS} mb={64}>
-                  {MemoizedGroupedProducts[category.id]?.map((product) => <ProductListItem key={product.id} product={product} onSelect={onPreviewOpen} />)}
-                </SimpleGrid>
-              </Tabs.Panel>
-            ))}
-          </Tabs>
-        )}
+            {defaultTab && (
+              <Tabs variant="pills" radius="xl" defaultValue={defaultTab} onChange={onTabChange}>
+                <ScrollArea w="100%" type="never" style={listStyle}>
+                  <Tabs.List py={16} px={16} style={{ flexWrap: 'nowrap' }}>
+                    {MemoizedTabs}
+                  </Tabs.List>
+                </ScrollArea>
+                {[...categories, DEFAULT_CATEGORY].map((category) => (
+                  <Tabs.Panel key={category.id} value={category.id}>
+                    <SimpleGrid p={16} spacing="md" verticalSpacing="lg" cols={GRID_BREAKPOINTS} mb={64}>
+                      {MemoizedGroupedProducts[category.id]?.map((product) => <ProductListItem key={product.id} product={product} onSelect={onPreviewOpen} />)}
+                    </SimpleGrid>
+                  </Tabs.Panel>
+                ))}
+              </Tabs>
+            )}
 
-        <ProductPreview onAddItemToCart={onAddToCart} product={productPreview} onRequestClose={onPreviewClose} />
-        <PageUp right={100} />
-        <CartButton onClick={console.log} items={cart?.total_products} />
-      </Container>
+          <ProductPreview onAddItemToCart={onAddToCart} product={productPreview} onRequestClose={onPreviewClose} />
+          <PageUp right={100} />
+          <CartButton onClick={console.log} items={cart?.total_products} />
+        </AppShell.Main>
+        <AppShell.Footer mx="auto" maw={980} mt={100} p={16} withBorder={false} pos="static">
+          <Footer />
+        </AppShell.Footer>
+      </AppShell>
     </MantineProvider>
   )
 }
