@@ -13,7 +13,7 @@ import { FileDownloader } from "@/shared/utils/files/download-file.util";
 
 import styles from './settings-tab.module.scss';
 import { useSDK } from "@/shared/api";
-import { GRID_BREAKPOINTS } from "@/shared/constants/grid-breakpoints";
+import { SocialNetwork } from "@/components/modals/social-network/social-network.component";
 
 export function SettingsTab() {
   const router = useRouter();
@@ -23,6 +23,7 @@ export function SettingsTab() {
   const [updatingStore, setUpdatingStore] = useState(false);
   const [editBasicInformation, setEditBasicInformation] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
+  const [editSocialNetwork, setEditSocialNetwork] = useState(false)
   const { stores } = useSDK();
 
   if (loading || !logged || !store) {
@@ -204,8 +205,8 @@ export function SettingsTab() {
             <Title order={2} size="xs">Redes Sociales</Title>
             <Text size="xs">¡Configura tus redes para que tus clientes puedan acceder a todo tu contenido!</Text>
             <Stack align="flex-end">
-              <Button disabled>
-                Próximamente
+              <Button onClick={() => setEditSocialNetwork(true)}>
+                Editar
               </Button>
             </Stack>
           </Stack>
@@ -216,7 +217,7 @@ export function SettingsTab() {
             <Text size="xs">Definí el color de tu marca, diseño de imágenes y mucho más.</Text>
             <Stack align="flex-end">
               <Button disabled>
-                Próximamente
+                Proximamente
               </Button>
             </Stack>
           </Stack>
@@ -238,6 +239,7 @@ export function SettingsTab() {
       </Modal>
       <StoreBasicInformation store={store} opened={editBasicInformation} onRequestClose={() => setEditBasicInformation(false)} />
       <StoreAddress store={store} opened={editAddress} onRequestClose={() => setEditAddress(false)} />
+      <SocialNetwork store={store} opened={editSocialNetwork} onRequestClose={() => setEditSocialNetwork(false)} />
     </Tabs.Panel>
   )
 }
