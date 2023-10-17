@@ -95,7 +95,6 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
             <Flex columnGap={8}>
               <ActionIcon.Group>
                 <ActionIcon size={36} variant="outline" onClick={handlers.decrement}>
-                  
                   <MinusIcon />
                 </ActionIcon>
                 <NumberInput
@@ -105,14 +104,15 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
                   min={1}
                   max={10}
                   hideControls
-                  w={50}
+                  style={{flex: 1}}
                   radius={0}
                   disabled
                   styles={{
                     input: {
                       textAlign: "center",
                       backgroundColor: "unset",
-                      opacity: 1
+                      opacity: 1,
+                      padding: 0
                     }
                   }}
                 />
@@ -120,8 +120,8 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
                 <PlusIcon />
                 </ActionIcon>
               </ActionIcon.Group>
-              <Button fullWidth onClick={onAddToCart}>
-                <Text size="sm">{`Añadir ($${Number(price) * count})`}</Text>
+              <Button onClick={onAddToCart} w="auto">
+                <Text size="sm">{`Añadir ($${(Number(price) * count).toFixed(2)})`}</Text>
               </Button>
             </Flex>
           </Stack>
