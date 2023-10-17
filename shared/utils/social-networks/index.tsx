@@ -1,9 +1,6 @@
 import { SocialNetworks } from "@ecosystem-ar/sdk";
-import { IconBrandFacebook, IconBrandInstagram, IconBrandTiktok, IconBrandTwitter, IconFloatNone } from "@tabler/icons-react";
+import { IconBrandFacebook, IconBrandInstagram, IconBrandLinkedin, IconBrandPinterest, IconBrandReddit, IconBrandSnapchat, IconBrandTelegram, IconBrandTiktok, IconBrandTwitter, IconBrandWhatsapp, IconBrandYoutube, IconFloatNone } from "@tabler/icons-react";
 
-/**
- * @todo add the complete social network list
- */
 export function SocialNetworkIcon(network: SocialNetworks, size: number) {
   let Icon;
   
@@ -19,6 +16,27 @@ export function SocialNetworkIcon(network: SocialNetworks, size: number) {
       break;
     case SocialNetworks.INSTAGRAM:
       Icon = IconBrandInstagram;
+      break;
+    case SocialNetworks.YOUTUBE:
+      Icon = IconBrandYoutube;
+      break;
+    case SocialNetworks.WHATSAPP:
+      Icon = IconBrandWhatsapp;
+      break;
+    case SocialNetworks.TELEGRAM:
+      Icon = IconBrandTelegram;
+      break;
+    case SocialNetworks.SNAPCHAT:
+      Icon = IconBrandSnapchat;
+      break;
+    case SocialNetworks.PINTEREST:
+      Icon = IconBrandPinterest;
+      break;
+    case SocialNetworks.LINKEDIN:
+      Icon = IconBrandLinkedin;
+      break;
+    case SocialNetworks.REDDIT:
+      Icon = IconBrandReddit;
       break;
     default:
       Icon = IconFloatNone;
