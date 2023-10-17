@@ -36,7 +36,7 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
     notifications.show({
       title: "Añadido al carrito",
       message: `Se añadio ${product.name} x ${count}u a la orden.`,
-      icon: <Image priority component={NextImage} src={product.images[0].uri} alt={product.name} width={50} height={50} radius="lg" />,
+      icon: <Image priority component={NextImage} src={product.images[0]?.uri} alt={product.name} width={50} height={50} radius="lg" />,
       withCloseButton: false,
       top: 60,
       styles: {
@@ -94,8 +94,9 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
             <Space h={16} />
             <Flex columnGap={8}>
               <ActionIcon.Group>
-                <ActionIcon size={36} variant="outline" onClick={handlers.increment}>
-                  <PlusIcon />
+                <ActionIcon size={36} variant="outline" onClick={handlers.decrement}>
+                  
+                  <MinusIcon />
                 </ActionIcon>
                 <NumberInput
                   clampBehavior="none"
@@ -115,8 +116,8 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
                     }
                   }}
                 />
-                <ActionIcon size={36} variant="outline" onClick={handlers.decrement}>
-                  <MinusIcon />
+                <ActionIcon size={36} variant="outline" onClick={handlers.increment}>
+                <PlusIcon />
                 </ActionIcon>
               </ActionIcon.Group>
               <Button fullWidth onClick={onAddToCart}>
