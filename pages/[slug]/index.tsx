@@ -126,16 +126,13 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
             <Title ta="center" order={1} tt="capitalize">
               {store.name}
             </Title>
-            <ScrollArea w="100%" type="never">
-              <Flex gap="xs" justify="center" align="flex-start" direction="row" wrap="nowrap" px={8}>
-
+            <Flex gap="xs" justify="center" align="flex-start" direction="row" wrap="wrap" px={8} w={200}>
               {(store.social_networks || []).map(({ name, id, url }) => (
                 <ActionIcon component="a" href={url} radius="xl" key={id} target="_blank">
                   {SocialNetworkIcon(name, 18)}
                 </ActionIcon>
               ))}
-              </Flex>
-            </ScrollArea>
+            </Flex>
             {store.address && (
               <Text fz="xs" ta="center" tt="capitalize">
                 {`${store.address.street_name} ${store.address.street_number} | ${store.address.city}`}
@@ -180,7 +177,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
 export async function getStaticProps({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const SSG_SDK = EcosystemStoreSDK({ base_uri: process.env.NEXT_PUBLIC_API_URI });
-
+  
   const store = await SSG_SDK.stores.findBySlug(slug);
 
   const [ products, categories ] = await Promise.all([
@@ -188,7 +185,7 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
     SSG_SDK.categories.findByStoreID(store.id)
   ]);
 
-  const theme = createTheme(store.theme ? { primaryColor: store.theme.color.primary } : {});
+  const theme = createTheme(store.theme ? {theme: { primaryColor: store.theme.color.primary }} as any : {});
 
   return {
     props: { store, products, categories, theme },
