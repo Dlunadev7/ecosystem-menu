@@ -109,7 +109,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
   }
 
   return (
-    <MantineProvider theme={theme} forceColorScheme={store.theme?.color.scheme}>
+    <MantineProvider classNamesPrefix="ecosystem" theme={theme} forceColorScheme={store.theme?.color.scheme}>
       <AppShell>
         <AppShell.Main px={0} maw={980} style={{ margin: 'auto' }}>
           <Head title={store.name} description={store.description} slug={store.slug} />
@@ -185,7 +185,28 @@ export async function getStaticProps({ params }: { params: { slug: string } }) {
     SSG_SDK.categories.findByStoreID(store.id)
   ]);
 
-  const theme = createTheme(store.theme ? {theme: { primaryColor: store.theme.color.primary }} as any : {});
+  const theme = createTheme(store.theme ? {
+    primaryColor: 'brand',
+    colors: {
+      brand: store.theme.color.brand,
+    },
+    shadows: {
+      xs: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
+          0 calc(0.0625rem*var(--mantine-scale)) calc(0.125rem*var(--mantine-scale)) ${store.theme.shadow.color}1A`,
+      sm: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
+          ${store.theme.shadow.color}0D 0 calc(0.625rem*var(--mantine-scale)) calc(0.9375rem*var(--mantine-scale)) calc(-0.3125rem*var(--mantine-scale)),
+          ${store.theme.shadow.color}0A 0 calc(0.4375rem*var(--mantine-scale)) calc(0.4375rem*var(--mantine-scale)) calc(-0.3125rem*var(--mantine-scale))`,
+      md: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
+          ${store.theme.shadow.color}0D 0 calc(1.25rem*var(--mantine-scale)) calc(1.5625rem*var(--mantine-scale)) calc(-0.3125rem*var(--mantine-scale)),
+          ${store.theme.shadow.color}0A 0 calc(0.625rem*var(--mantine-scale)) calc(0.625rem*var(--mantine-scale)) calc(-0.3125rem*var(--mantine-scale))`,
+      lg: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
+          ${store.theme.shadow.color}0D 0 calc(1.75rem*var(--mantine-scale)) calc(1.4375rem*var(--mantine-scale)) calc(-0.4375rem*var(--mantine-scale)),
+          ${store.theme.shadow.color}0A 0 calc(0.75rem*var(--mantine-scale)) calc(0.75rem*var(--mantine-scale)) calc(-0.4375rem*var(--mantine-scale))`,
+      xl: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
+          ${store.theme.shadow.color}0D 0 calc(2.25rem*var(--mantine-scale)) calc(1.75rem*var(--mantine-scale)) calc(-0.4375rem*var(--mantine-scale)),
+          ${store.theme.shadow.color}0A 0 calc(1.0625rem*var(--mantine-scale)) calc(1.0625rem*var(--mantine-scale)) calc(-0.4375rem*var(--mantine-scale))`,
+    }    
+  } as any : {});
 
   return {
     props: { store, products, categories, theme },

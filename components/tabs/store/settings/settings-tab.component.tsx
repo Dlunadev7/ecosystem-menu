@@ -34,8 +34,6 @@ export function SettingsTab() {
     );
   }
 
-  console.log(theme.colors)
-
   const onDownloadQrRequest = async (imageUrl: string) => {
     await FileDownloader({
       uri: imageUrl,

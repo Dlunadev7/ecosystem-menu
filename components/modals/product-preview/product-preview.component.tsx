@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import NextImage from "next/image";
-import { ActionIcon, AspectRatio, Button, Flex, Modal, NumberInput, Space, Stack, Text, Title, Image, Loader } from "@mantine/core";
+import { ActionIcon, AspectRatio, Button, Flex, Modal, NumberInput, Space, Stack, Text, Title, Image } from "@mantine/core";
 import { Carousel, Embla, useAnimationOffsetEffect } from "@mantine/carousel";
 
 import { ProductPreviewProps } from "./product-preview.type";
@@ -104,7 +104,7 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
                   min={1}
                   max={10}
                   hideControls
-                  style={{flex: 1}}
+                  w={50}
                   radius={0}
                   disabled
                   styles={{
@@ -120,7 +120,7 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
                 <PlusIcon />
                 </ActionIcon>
               </ActionIcon.Group>
-              <Button onClick={onAddToCart} w="auto">
+              <Button onClick={onAddToCart} fullWidth>
                 <Text size="sm">{`Añadir ($${(Number(price) * count).toFixed(2)})`}</Text>
               </Button>
             </Flex>

@@ -1,36 +1,36 @@
 import { useSDK } from '@/shared/api';
 import { NOTIFICATIONS } from '@/shared/constants/notifications';
 import { StoreTheme } from '@ecosystem-ar/sdk';
-import { Button, ColorInput, DEFAULT_THEME, Group, LoadingOverlay, MantineTheme, Modal, Select, Stack } from '@mantine/core'
+import { Button, ColorInput, ColorSwatch, DEFAULT_THEME, Group, LoadingOverlay, Modal, Select, Stack } from '@mantine/core'
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import React, { useState } from 'react'
+import { generateColors } from '@mantine/colors-generator';
 
 export const ColorScheme = ({ opened, onRequestClose, store }: any) => {
   const { stores } = useSDK();
   const [updatingStore, setUpdatingStore] = useState(false);
 
-  const form = useForm({
+  const form = useForm<StoreTheme>({
     initialValues: {
       color: {
-        primary: store?.theme?.color?.primary,
-        scheme: "light",
+        brand: store.theme?.color.brand || DEFAULT_THEME.colors.dark as any,
+        scheme: store.theme?.color.scheme || "light",
       },
       product_item: {
-        border_radius: store?.theme?.product?.border_radius,
+        border_radius: 16,
       },
       shadow: {
-        color: store?.theme?.shadow?.color
+        color: store.theme?.shadow.color || DEFAULT_THEME.colors.dark as any,
       },
       typography: {
-        font_family: store?.theme?.typography?.font_family,
-        color: store?.theme?.typography?.color
+        font_family: 'Inter',
+        color: store.theme?.typography.color || DEFAULT_THEME.black,
       },
     },
   });
 
   const onReset = () => {
-    form.setValues(store?.address || {});
     form.resetDirty();
   }
 
@@ -42,7 +42,16 @@ export const ColorScheme = ({ opened, onRequestClose, store }: any) => {
   const onStoreUpdate = () => {
     notifications.show(NOTIFICATIONS.STORE_UPDATE_PENDING);
     setUpdatingStore(true);
-    stores.update(store.id, { theme: form.values as StoreTheme })
+
+    const theme: StoreTheme = {
+      ...form.values,
+      typography: {
+        font_family: 'Inter',
+        color: form.values.color.scheme === 'light' ? DEFAULT_THEME.white : DEFAULT_THEME.black,
+      }
+    }
+
+    stores.update(store.id, { theme })
       .then(() => notifications.update(NOTIFICATIONS.STORE_UPDATE_SUCCESS))
       .catch(() => notifications.update(NOTIFICATIONS.STORE_UPDATE_FAILED))
       .finally(() => {
@@ -51,66 +60,58 @@ export const ColorScheme = ({ opened, onRequestClose, store }: any) => {
       });
   };
 
-  function generateSwatchesFromTheme(theme: MantineTheme) {
-    const swatches = Object.values(theme.colors).reduce(
-      (acc, colorArray) => [...acc, ...colorArray] as any,
-      []
-    );
-    return swatches;
-  }
-
   return (
-    <Modal opened={opened} onClose={onClose} title="Personalizacion de tema">
+    <Modal opened={opened} onClose={onClose} title="Colores del menú">
       <form onSubmit={form.onSubmit(onStoreUpdate)}>
         <Stack>
           <ColorInput
-            placeholder="Pick color"
             label="Color principal"
-            disallowInput
-            withPicker={false}
-            swatches={generateSwatchesFromTheme(DEFAULT_THEME)}
-            {...form.getInputProps("color.primary")}
+            withEyeDropper={false}
+            format="hexa"
+            {...form.getInputProps("color.brand")}
+            value={form.values.color.brand[6]}
+            onChange={(color) => {
+              form.setFieldValue("color.brand", generateColors(color))
+            }}
           />
-          <Select
-            label="Bordeado de imagen"
-            placeholder="Pick value"
-            defaultValue="Medio"
-            allowDeselect={false}
-            data={["Bajo", "Medio", "Alto"]}
-            {...form.getInputProps("product_item.border_radius")}
-          />
+          <Group grow gap="xs">
+            {form.values.color.brand.map((color, index) => (
+              <ColorSwatch color={color} key={index} />
+            ))}
+          </Group>
           <ColorInput
-            placeholder="Pick Value"
-            label="Color de sombra del producto"
-            disallowInput
-            withPicker={false}
-            swatches={generateSwatchesFromTheme(DEFAULT_THEME)}
+            label="Color de las sombras"
+            withEyeDropper={false}
             {...form.getInputProps("shadow.color")}
+            value={form.values.shadow.color}
+            onChange={(color) => form.setFieldValue("shadow.color", color)}
           />
           <Group grow>
-          <Select
-            label="Tipografia"
-            placeholder="Pick value"
-            defaultValue="Poppins"
-            allowDeselect={false}
-            {...form.getInputProps("typography.font_family")}
-          />
-          <ColorInput
-            placeholder="Pick color"
-            label="Color de fuente"
-            disallowInput
-            withPicker={false}
-            swatches={generateSwatchesFromTheme(DEFAULT_THEME)}
-            {...form.getInputProps("typography.color")}
+            <Select
+              label="Tipografia"
+              allowDeselect={false}
+              disabled
+              defaultValue="Inter"
+              data={[ { value: "Inter", label: "Inter" }]}
+              {...form.getInputProps("typography.font_family")}
+            />
+            <ColorInput
+              label="Color de fuente"
+              withEyeDropper={false}
+              disabled
+              format="hexa"
+              {...form.getInputProps("typography.color")}
+            />
+            <Select
+              label="Modo"
+              allowDeselect={false}
+              data={[ { value: "light", label: "Claro" }, { value: "dark", label: "Oscuro" }]}
+              {...form.getInputProps("color.scheme")}
             />
           </Group>
-          <Group grow>
-          </Group>
-          <Group justify="flex-end">
-            <Button variant="outline"type="submit" loading={updatingStore}>
-              Guardar
-            </Button>
-          </Group>
+          <Button variant="outline" type="submit" loading={updatingStore}>
+            Guardar
+          </Button>
         </Stack>
         <LoadingOverlay visible={updatingStore} overlayProps={{ blur: 2 }} />
       </form>
