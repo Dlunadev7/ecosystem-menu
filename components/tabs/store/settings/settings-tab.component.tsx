@@ -3,7 +3,7 @@ import { useAuth } from "@/context/auth/auth.context";
 import { useStore } from "@/shared/hooks/stores/store";
 import { RandomAvatar, dataURItoBlob } from "@/shared/utils/avatars";
 import { NOTIFICATIONS } from "@/shared/constants/notifications";
-import { Button, Flex, Image, Modal, Paper, ScrollArea, SimpleGrid, Space, Stack, Tabs, Text, Title } from "@mantine/core";
+import { Button, Flex, Image, Modal, Paper, ScrollArea, SimpleGrid, Space, Stack, Tabs, Text, Title, useMantineTheme } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -13,7 +13,8 @@ import { FileDownloader } from "@/shared/utils/files/download-file.util";
 
 import styles from './settings-tab.module.scss';
 import { useSDK } from "@/shared/api";
-import { GRID_BREAKPOINTS } from "@/shared/constants/grid-breakpoints";
+import { SocialNetwork } from "@/components/modals/social-network/social-network.component";
+import { ColorScheme } from "@/components/modals/color-scheme/color-scheme.component";
 
 export function SettingsTab() {
   const router = useRouter();
@@ -23,8 +24,10 @@ export function SettingsTab() {
   const [updatingStore, setUpdatingStore] = useState(false);
   const [editBasicInformation, setEditBasicInformation] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
+  const [editSocialNetwork, setEditSocialNetwork] = useState(false);
+  const [editColorScheme, setEditColorScheme] = useState(false);
   const { stores } = useSDK();
-
+  const theme = useMantineTheme();
   if (loading || !logged || !store) {
     return (
       <Splash loading={loading} notfound={!store} unauthorized={!logged} />
@@ -204,8 +207,8 @@ export function SettingsTab() {
             <Title order={2} size="xs">Redes Sociales</Title>
             <Text size="xs">¡Configura tus redes para que tus clientes puedan acceder a todo tu contenido!</Text>
             <Stack align="flex-end">
-              <Button disabled>
-                Próximamente
+              <Button onClick={() => setEditSocialNetwork(true)}>
+                Editar
               </Button>
             </Stack>
           </Stack>
@@ -215,8 +218,8 @@ export function SettingsTab() {
             <Title order={2} size="xs">Esquema de colores</Title>
             <Text size="xs">Definí el color de tu marca, diseño de imágenes y mucho más.</Text>
             <Stack align="flex-end">
-              <Button disabled>
-                Próximamente
+              <Button onClick={() => setEditColorScheme(true)}>
+                Editar
               </Button>
             </Stack>
           </Stack>
@@ -238,6 +241,8 @@ export function SettingsTab() {
       </Modal>
       <StoreBasicInformation store={store} opened={editBasicInformation} onRequestClose={() => setEditBasicInformation(false)} />
       <StoreAddress store={store} opened={editAddress} onRequestClose={() => setEditAddress(false)} />
+      <SocialNetwork store={store} opened={editSocialNetwork} onRequestClose={() => setEditSocialNetwork(false)} />
+      <ColorScheme store={store} opened={editColorScheme} onRequestClose={() => setEditColorScheme(false)} />
     </Tabs.Panel>
   )
 }

@@ -8,10 +8,10 @@ export { Header } from './header/header.component';
 export { Footer } from './footer/footer.component';
 export { Toolbar } from './toolbar/toolbar.component';
 export { Splash } from './splash/splash.component';
-export { PageUp } from './page-up/page-up.component';
 export { Table } from './table/table.component';
 export { SkeletonList } from './skeleton-list/skeleton-list.component';
 export { ConfirmationModal } from './modals/confirmation-modal/confirmation-modal.component';
+export { PageUp } from './page-up/page-up.component';
 
 /**
  * Components Ready to Migrate
@@ -21,3 +21,4 @@ export { FileSelector } from './file-selector/file-selector.component';
 export { FileButton } from "./file-button/file-button.component";
 export { Card } from "./card/card.component";
 export { ProductListItem  } from "./product-item/product-list-item.component"
+export { CartButton } from "./cart-button/cart-button.component";

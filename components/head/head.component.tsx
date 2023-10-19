@@ -18,7 +18,7 @@ export function Head(props: HeadProps) {
       <title>{title || 'MenuQR - La solución de digital de Ecosystem para tu local'}</title>
       <meta charSet="UTF-8" />
       {/* Favicon */}
-      <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no" />
+      <meta name="viewport" content="minimum-scale=1.0, initial-scale=1.0, width=device-width, user-scalable=no" />
       <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"></link>
       <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"></link>
       <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"></link>
