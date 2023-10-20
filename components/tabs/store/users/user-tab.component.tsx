@@ -25,9 +25,8 @@ export function InviteUser({ store, open, onRequestClose }: { store: StoreEntity
   const [guest, setGuest] = useState<null | UserEntity>(null);
   const [searching, setSearching] = useState(false);
   const [sendingInvitation, setSendingInvitation] = useState(false);
-
   const { user } = useAuth();
-  const { refetch_invitations } = useInvitations(store.id, user.id as string);
+  const { invitations, refetch_invitations } = useInvitations(store.id, user.id as string);
   const { users } = useSDK();
 
   const onModalClose = () => {
@@ -38,13 +37,32 @@ export function InviteUser({ store, open, onRequestClose }: { store: StoreEntity
     onRequestClose();
   }
 
-  const onSearchUser = () => {
-    setSearching(true);
-    users.findUserByEmail(email)
-      .then((user) => setGuest(user))
-      .catch(() => setSearchNotFound("No se encontró usuario con este email"))
-      .finally(() => setSearching(false))
-  }
+  const onSearchUser = async () => {
+    try {
+      setSearching(true);
+      const _user = await users.findUserByEmail(email);
+  
+      if (_user.email === user.email) {
+        throw new Error("¡No podes invitarte a vos mismo!");
+      }
+  
+      if (invitations.some((item) => item.guest.email === _user.email)) {
+        throw new Error("El usuario ya está invitado.");
+      }
+  
+      setSearchNotFound("");
+      setGuest(_user);
+    } catch (error: any) {
+      if (error.message === "¡No podes invitarte a vos mismo!" || error.message === "El usuario ya está invitado.") {
+        setSearchNotFound(error.message);
+      } else {
+        setSearchNotFound("El usuario no existe");
+      }
+      setGuest(null)
+    } finally {
+      setSearching(false);
+    }
+  };
 
   const onSubmitInvitation = () => {
     setSendingInvitation(true);
@@ -91,7 +109,7 @@ export function InviteUser({ store, open, onRequestClose }: { store: StoreEntity
           onChange={(event) => setEmail(event.currentTarget.value)}
           type="email"
           value={email}
-          error={searchNotFound}
+          onFocus={ ()=> setSearchNotFound("") }
           rightSection={searching ? <Loader size="xs" color="dark" /> : <IconAt size={18} color="gray" stroke={1} />}
         />
         <Button onClick={onSearchUser} disabled={searching || !email || !/.+\@.+\..+/.test(email)}>
@@ -101,7 +119,7 @@ export function InviteUser({ store, open, onRequestClose }: { store: StoreEntity
       {!guest ? (
         <EmptyState
           flat
-          title={searchNotFound ? "Usuario no encontrado" : "¡Súma colaboradores!"}
+          title={searchNotFound ? searchNotFound : "¡Súma colaboradores!"}
           description="Invita a otros usuarios de la plataforma a administrar tu tienda"
           icon={searchNotFound ? <Emoji tag={EmojiTags.PINCHED_FINGERS} /> : <Emoji tag={EmojiTags.WAVING_HAND} />}
         />
