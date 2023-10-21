@@ -21,11 +21,11 @@ export const ColorScheme = ({ opened, onRequestClose, store }: any) => {
         border_radius: 16,
       },
       shadow: {
-        color: store.theme?.shadow.color || DEFAULT_THEME.colors.dark as any,
+        color: store.theme?.shadow.color || DEFAULT_THEME.black,
       },
       typography: {
         font_family: 'Inter',
-        color: store.theme?.typography.color || DEFAULT_THEME.black,
+        color: store.theme?.typography?.color || DEFAULT_THEME.black,
       },
     },
   });
@@ -81,10 +81,9 @@ export const ColorScheme = ({ opened, onRequestClose, store }: any) => {
           </Group>
           <ColorInput
             label="Color de las sombras"
+            format='hexa'
             withEyeDropper={false}
             {...form.getInputProps("shadow.color")}
-            value={form.values.shadow.color}
-            onChange={(color) => form.setFieldValue("shadow.color", color)}
           />
           <Group grow>
             <Select

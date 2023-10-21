@@ -8,7 +8,7 @@ type FileButtonProps = {
   watch: boolean;
 }
 
-export function FileButton({ watch , onSelect, accept = "image/png,image/jpeg,image/jpg", children }: FileButtonProps) {
+export function FileButton({ watch , onSelect, accept = "image/png,image/jpeg,image/jpg,image/webp", children }: FileButtonProps) {
   const reference = useRef<() => void>(null);
 
   useEffect(() => {
