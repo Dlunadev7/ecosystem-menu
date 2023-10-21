@@ -39,10 +39,6 @@ import { useSDK } from "@/shared/api";
 
 export default function DashboardScreen() {
   const router = useRouter();
-  /**
-   * 
-   * @todo Revisar todo este codigo devuelta!
-   */
   const tenant = useTenant();
   const { token, logged, loading, user, login } = useAuth();
   const { user_stores, refetch_user_stores, loading_user_stores } = useUserStores(token);
@@ -52,7 +48,11 @@ export default function DashboardScreen() {
   const [createStore, setCreateStore] = useState(false);
   const [loadingAcceptance, setLoadingAcceptance] = useState(false);
 
-  const invitationTally = invitations.filter((invitation: InvitationEntity) => invitation.accepted !== true).length;
+  const invitationTally = invitations.filter((invitation: InvitationEntity) => {
+    const dateOfExpiration = dayjs(invitation.created_at).add(7, 'day');
+    return !invitation.accepted && dayjs().isBefore(dateOfExpiration) && !invitation.deleted_at;
+  }).length;
+  
 
   const onAcceptInvitation = (invitation: InvitationEntity) => {
     notifications.show(NOTIFICATIONS.ACCEPT_INVITATION_PENDING);
@@ -72,7 +72,10 @@ export default function DashboardScreen() {
 
   useEffect(() => {
     invitations.forEach((invitation) => {
-      if (invitation.accepted === undefined) {
+      const dateOfExpiration = dayjs(invitation.created_at).add(7).format();
+      const validateDateOfExpiration = dayjs().isAfter(dateOfExpiration, "day");
+
+      if (invitation.accepted === undefined && !validateDateOfExpiration && !Boolean(invitation.deleted_at)) {
         notifications.show({
           id: invitation.id,
           title: 'Invitación pendiente',
@@ -82,6 +85,7 @@ export default function DashboardScreen() {
       }
     })
   }, [invitations])
+
 
   const InvitationsTableSettings = useMemo(() => [
     { header: 'Remitente', render: (invitation: InvitationEntity) => <Text size="xs" tt="capitalize">{`${invitation.host.first_name} ${invitation.host.last_name}`}</Text> },
@@ -96,8 +100,15 @@ export default function DashboardScreen() {
       render: (invitation: InvitationEntity) => {
         const { accepted } = invitation;
 
+        const dateOfExpiration = dayjs(invitation.created_at).add(7).format();
+        const validateDateOfExpiration = dayjs().isAfter(dateOfExpiration, "day");
+
         const color = accepted === undefined ? 'orange' : accepted ? 'green' : 'red';
-        const label = accepted === undefined ? 'PENDIENTE' : accepted ? 'ACEPTADA' : 'RECHAZADA'
+        let label = accepted === undefined ? 'PENDIENTE' : accepted ? 'ACEPTADA' : 'RECHAZADA';
+        
+        if(!accepted && validateDateOfExpiration) {
+          label = 'EXPIRADO'
+        };
 
         return !invitation.deleted_at ? <Badge color={color} variant="light">{label}</Badge> : <Badge size="sm" color="gray" variant="light">CANCELADA</Badge>
       },
@@ -105,11 +116,15 @@ export default function DashboardScreen() {
     {
       header: '',
       render: (invitation: InvitationEntity) => {
-        const { accepted } = invitation;
-        const Icon = (accepted === undefined || accepted) ? <IconCheck color="green" size={24} stroke={1} /> : <IconBan size={24} stroke={1} />;
+        const { accepted, deleted_at } = invitation;
+        const dateOfExpiration = dayjs(invitation.created_at).add(7).format();
+        const validateDateOfExpiration = dayjs().isAfter(dateOfExpiration, "day");
+
+        let Icon = (accepted === undefined || accepted) ? <IconCheck color={!validateDateOfExpiration ? "green" : "gray"} size={24} stroke={1} /> : <IconBan size={24} stroke={1} />
         const IconWithLoader = loadingAcceptance ? <Loader /> : Icon;
+        
         return (
-          <ActionIcon variant="transparent"  size="xs" onClick={() => onAcceptInvitation(invitation)} disabled={accepted !== undefined}>
+          <ActionIcon variant="transparent"  size="xs" onClick={() => onAcceptInvitation(invitation)} disabled={accepted !== undefined || validateDateOfExpiration || Boolean(deleted_at)}>
             {IconWithLoader}
           </ActionIcon>
         )

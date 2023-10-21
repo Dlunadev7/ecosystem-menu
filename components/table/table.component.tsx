@@ -35,11 +35,16 @@ export function Table({ data = [], settings, loading, title, rightSection }: Tab
             </MTable.Tr>
           </MTable.Thead>
           <MTable.Tbody>
-            {!loading && Boolean(data.length) && data.map((row, index) => (
-              <MTable.Tr key={index}>
-                {settings.map(({ render }, index) => <MTable.Td key={index}>{render(row)}</MTable.Td>)}
-              </MTable.Tr>
-            ))}
+            {!loading && Boolean(data.length) && data
+              .slice()
+              .sort((a, b) => Number(new Date(b.created_at)) - Number(new Date(a.created_at)))
+              .map((row, index) => (
+                <MTable.Tr key={index}>
+                  {settings.map(({ render }, index) => (
+                    <MTable.Td key={index}>{render(row)}</MTable.Td>
+                  ))}
+                </MTable.Tr>
+              ))}
           </MTable.Tbody>
         </MTable>
         {loading || !Boolean(data.length) && (

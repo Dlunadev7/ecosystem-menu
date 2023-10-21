@@ -49,12 +49,12 @@ export default function Cropper(props: CropperProps) {
         dragMode="move"
         minCropBoxHeight={100}
         minCropBoxWidth={100}
-        background={false}
+        // background={false}
         aspectRatio={aspectRatio}
         modal={false}
         responsive
 
-        viewMode={3}
+        viewMode={1}
       />
       <Group grow>
         <Button onClick={onRequestClose} variant="subtle" leftSection={<IconArrowBack />}>

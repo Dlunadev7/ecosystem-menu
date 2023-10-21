@@ -50,7 +50,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
   });
 
   const MemoizedTabs = useMemo(() => [...categories, DEFAULT_CATEGORY].map(({ id, name }) => (
-    <Tabs.Tab key={id} value={id} fw="regular">
+    <Tabs.Tab key={id} value={id} tt="capitalize" fw="regular">
       {name}
     </Tabs.Tab>
   )), [categories]);
@@ -114,16 +114,16 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
         <AppShell.Main px={0} maw={980} style={{ margin: 'auto' }}>
           <Head title={store.name} description={store.description} slug={store.slug} />
           <Stack align="center" mb={64}>
-            <Paper h={100} shadow="md" radius={8} mt={64} style={{ overflow: 'hidden' }}>
+            <Paper h={120} shadow="md" radius={8} mt={64} style={{ overflow: 'hidden' }}>
               <Image
-                width={100}
-                height={100}
+                width={120}
+                height={120}
                 src={store.avatar?.uri || RandomAvatar("randm")}
                 alt={`${store.name} avatar`}
                 priority
               />
             </Paper>
-            <Title ta="center" order={1} tt="capitalize">
+            <Title ta="center" order={1}>
               {store.name}
             </Title>
             <Flex gap="xs" justify="center" align="flex-start" direction="row" wrap="wrap" px={8} w={200}>
@@ -139,7 +139,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
               </Text>
             )}
             {store.description && (
-              <Text px={8} fz="xs" ta="center">
+              <Text px={16} fz="xs" ta="center" maw={450}>
                 {store.description}
               </Text>
             )}

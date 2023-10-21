@@ -5,7 +5,6 @@ import {
   Group,
   LoadingOverlay,
   Modal,
-  Pill,
   Stack,
   TextInput,
 } from "@mantine/core";
@@ -13,24 +12,29 @@ import { useForm } from "@mantine/form";
 import { useSDK } from "@/shared/api";
 import { NOTIFICATIONS } from "@/shared/constants/notifications";
 import { getSocialNetworkByURL } from "@/shared/helpers/getSocialNetworkByURL";
-import { SocialNetwork as SocialNetworkEnum } from "@ecosystem-ar/sdk";
+import { SocialNetwork as SocialNetworkEnum, SocialNetworks } from "@ecosystem-ar/sdk";
 import { notifications } from "@mantine/notifications";
+import { SocialNetworkIcon } from "@/shared/utils/social-networks";
+import { IconX } from "@tabler/icons-react";
 
 export const SocialNetwork = ({ opened, onRequestClose, store }: any) => {
   const { stores } = useSDK();
   const [updatingStore, setUpdatingStore] = useState(false);
+ 
   
   const form = useForm({
     initialValues: {
-      social:  store?.social_networks,
+      social: store?.social_networks,
     },
   });
 
-  const [inputSocialNetwork, setInputSocialNetwork] = useState("");
-  const [items, setItems] = useState<any>([...form.values.social]);
 
+  const [inputSocialNetwork, setInputSocialNetwork] = useState("");
+  const [socialsToLink, setSocialsToLink] = useState<any>([...form.values.social]);
+  const [socialsToUnlink, setSocialsToUnlink] = useState<any>([])
   const redSocial = getSocialNetworkByURL(inputSocialNetwork);
-  const alreadyExists = items.some((item: SocialNetworkEnum) => item.url === inputSocialNetwork);
+  const alreadyExists = socialsToLink.some((item: SocialNetworkEnum) => item.url === inputSocialNetwork);
+
 
   const errorMessage = alreadyExists
     ? "Dirección URL existente"
@@ -43,52 +47,65 @@ export const SocialNetwork = ({ opened, onRequestClose, store }: any) => {
     onRequestClose();
   };
 
-  const onStoreUpdate = () => {
+  const socialsToUpload = (url: SocialNetworkEnum[], socials: any) => {
+    if (!socials || !socials.length) return url;
+    return url.filter((networks: any) => !socials.map((social: any) => social.url).includes(networks.url));
+  }
+
+  const socialsToRemove = (url: SocialNetworkEnum[], socials: any) => {
+    return socials.filter((networks: any) => url.includes(networks.url)).map((networks: any) => networks.id);
+  }
+
+  const onSaveSocialNetworks = () => {
     notifications.show(NOTIFICATIONS.STORE_UPDATE_PENDING);
     setUpdatingStore(true);
-    stores.update(store.id, { social_networks: items as SocialNetworkEnum[] })
+    
+    const networks_to_upload = socialsToUpload(socialsToLink, store.social_networks);
+    const networks_to_remove = socialsToRemove(socialsToUnlink, store.social_networks);
+
+    if(networks_to_upload.length) {
+      stores.addSocialNetworks(store.id, networks_to_upload)
       .then(() => notifications.update(NOTIFICATIONS.STORE_UPDATE_SUCCESS))
       .catch(() => notifications.update(NOTIFICATIONS.STORE_UPDATE_FAILED))
       .finally(() => {
         setUpdatingStore(false);
         onRequestClose();
       });
+    }
+
+    if (socialsToUnlink.length) {
+      stores.removeSocialNetworks(store.id, networks_to_remove)
+        .then(() => notifications.update(NOTIFICATIONS.STORE_UPDATE_SUCCESS))
+        .catch(() => notifications.update(NOTIFICATIONS.STORE_UPDATE_FAILED))
+        .finally(() => {
+          setUpdatingStore(false);
+          onRequestClose();
+          setSocialsToUnlink([]);
+        });
+    }
   };
 
-  const onRemoves = (name: string) => {
-    const filteredPills = items.filter((item: SocialNetworkEnum) => item.name !== name);
-    setItems(filteredPills);
-  };
 
-  const SocialNetworkPills = items.map((item: SocialNetworkEnum, index: string) => (
-    <Pill
-      key={`social-network-${item.name}`}
-      id={index}
-      withRemoveButton
-      onRemove={() => onRemoves(item.name)}
-      size="md"
-      style={{ justifyContent: "space-between" }}
-    >
-      {item.url}
-    </Pill>
-  ));
-  
-  const addSocialNetwork = () => {
+
+  const addSocialNetworks = () => {
     if (inputSocialNetwork.trim() !== "" && !alreadyExists) {
-      setItems([...items, {
+      setSocialsToLink([...socialsToLink, {
         url: inputSocialNetwork,
         name: redSocial,
-        id: redSocial,
       }]);
       setInputSocialNetwork("")
-      form.reset();
     }
-    
+  }
+
+  const onRemoveNetworks = (url: string) => {
+    const filteredPills = socialsToLink.filter((item: SocialNetworkEnum) => item.url !== url);
+    setSocialsToLink(filteredPills);
+    setSocialsToUnlink([...socialsToUnlink, url]);
   };
 
   return (
     <Modal opened={opened} onClose={onClose} title="Redes Sociales">
-      <form onSubmit={form.onSubmit(onStoreUpdate)}>
+      <form onSubmit={form.onSubmit(onSaveSocialNetworks)}>
         <Stack>
           <Flex align="flex-start" gap={8}>
             <TextInput
@@ -98,11 +115,33 @@ export const SocialNetwork = ({ opened, onRequestClose, store }: any) => {
               value={inputSocialNetwork}
               error={Boolean(inputSocialNetwork.length) && errorMessage}
             />
-            <Button onClick={addSocialNetwork} disabled={Boolean(errorMessage)}>
+            <Button onClick={addSocialNetworks} disabled={Boolean(errorMessage)}>
               Añadir
             </Button>
           </Flex>
-          <Pill.Group style={{flexDirection: "column"}}>{SocialNetworkPills}</Pill.Group>
+          <Group>
+            {
+              socialsToLink.map((item: SocialNetworkEnum) => (
+                <TextInput
+                  key={item.url}
+                  id={item.id}
+                  w="100%"
+                  size="xs"
+                  style={{ justifyContent: "space-between" }}
+                  leftSection={SocialNetworkIcon(item.name as SocialNetworks, 18)}
+                  rightSection={<IconX size={18} color="#495057" />}
+                  rightSectionProps={{
+                    onClick: () => onRemoveNetworks(item.url),
+                    style:{
+                      cursor: "pointer"
+                    }
+                  }}
+                  defaultValue={item.url}
+                  disabled
+                />
+              ))
+            }
+          </Group>
           <Group justify="flex-end">
             <Button variant="outline" type="submit" loading={updatingStore}>
               Guardar
