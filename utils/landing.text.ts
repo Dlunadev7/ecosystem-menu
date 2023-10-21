@@ -10,8 +10,8 @@ export const LANDING_TEXT = {
     HIGHLIGHT_2: [
       { title: 'Actualización instantánea', subtitle: 'Mantené al día la disponibilidad e información de productos y categorías en tiempo real.' },
       { title: 'Gestión sin límite', subtitle: 'Crea y gestiona locales sin límite.' },
-      { title: 'Un millon de amigos', subtitle: 'Añadi la cantidad de usuarios que quieras para manejar tu local.' },
-      { title: 'Informe semanal de la Inteligente', subtitle: 'Recibí informes semanales detallados creados por la Inteligencia Artificial.' },
+      { title: 'Un millon de amigos', subtitle: 'Añadí la cantidad de usuarios que quieras para manejar tu local.' },
+      { title: 'Informe semanal Inteligente', subtitle: 'Recibí informes semanales detallados creados por la Inteligencia Artificial.' },
     ],
     CUSTOMIZATION_INTEGRATIONS: [
       { title: "Dale tu toque", subtitle: "Personalizá la apariencia de tu local a tu estilo." },

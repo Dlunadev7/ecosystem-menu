@@ -22,7 +22,7 @@ export default function LandingPage() {
         }}
       >
         <Flex maw={980} m="auto" gap="md" justify="space-between" align="center" direction="row">
-          <Image maw={100} width="100px" src="https://store-ecosystem.vercel.app/statics/imagotype.svg" alt="" />
+          <Image maw={100} width="100px" src="/statics/imagotype.svg" alt="" />
           <Group>
             {!isMobile && (
               <Button size="sm" variant="outline" onClick={() => router.push("auth/sign-in")}>
@@ -50,7 +50,7 @@ export default function LandingPage() {
           <Stack align={isMobile ? "center" : "flex-start"} maw={580}>
             <Title ta={isMobile ? "center" : "start"} fz={48}>Tu solución digital</Title>
             <Text ta={isMobile ? "center" : "start"} fz={22}>
-              Gestioná tu menú y pedidos desde donde quieras y cuando quieras. La solución definitiva para bares y restaurantes.
+              Gestioná tu menú y pedidos desde donde quieras y cuando quieras. La solución definitiva para tu negocio.
             </Text>
             <Button
               mt="lg"
@@ -65,12 +65,12 @@ export default function LandingPage() {
               Registrate, es gratis.
             </Button>
           </Stack>
-          <Image alt="" maw={300} src="https://nine4-2.vercel.app/images/iPhone-12-Mockup.png" />
+          <Image alt="" maw={300} src="/statics/first_mockup.svg" />
         </Flex>
 
         <Flex p="lg" py={50} my={100} bg="dark" style={{ borderRadius: 60 }} gap="md" justify="space-between" align="center" direction={isMobile ? "column" : "row"}>
           {!isMobile && (
-            <Image alt="" maw={300} src="https://nine4-2.vercel.app/images/iPhone-12-Mockup.png" />
+            <Image alt="" maw={350} src="/statics/second_mockup.svg" />
           )}
           <List withPadding size="md" spacing="md" color="dark" listStyleType="none">
             {LANDING_TEXT.FEATURES.HIGHLIGHT_1.map(({ title, subtitle }) => (
@@ -96,13 +96,13 @@ export default function LandingPage() {
             ))}
           </List>
           {!isMobile && (
-            <Image alt="" maw={300} src="https://nine4-2.vercel.app/images/iPhone-12-Mockup.png" />
+            <Image alt="" maw={350} src="/statics/third_mockup.svg" />
           )}
         </Flex>
 
         <Flex p="lg" py={50} my={100} bg="dark" style={{ borderRadius: 60 }} gap="md" justify="space-between" align="center" direction={isMobile ? "column" : "row"}>
           {!isMobile && (
-            <Image alt="" maw={300} src="https://nine4-2.vercel.app/images/iPhone-12-Mockup.png" />
+            <Image alt="" maw={350} src="/statics/fourth_mockup.svg" />
           )}
           <List withPadding size="md" spacing="md" listStyleType="none">
             {LANDING_TEXT.FEATURES.CUSTOMIZATION_INTEGRATIONS.map(({ title, subtitle }) => (
