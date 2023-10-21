@@ -117,12 +117,14 @@ export default function LandingPage() {
         </Flex>
 
         <Accordion>
-          {LANDING_TEXT.FAQS.map(({ title, content }) => (
+          {LANDING_TEXT.FAQS.map(({ title, content, disabled }) => (
             <Accordion.Item key={title} value={title}>
-              <Accordion.Control>
+              <Accordion.Control disabled={disabled}>
                 {title}
               </Accordion.Control>
-              <Accordion.Panel>{content}</Accordion.Panel>
+              <Accordion.Panel fz="sm" c="dimmed">
+                {content}
+              </Accordion.Panel>
             </Accordion.Item>
           ))}
         </Accordion>
