@@ -11,7 +11,7 @@ const tenants = [
     name: 'Ecosystem',
     logo: '/statics/imagotype.svg',
     email: 'mauroluna.dev@gmail.com',
-    hosts: ['localhost:3000', 'store.ecosystem.com.ar', 'store-ecosystem.verce.app'],
+    hosts: ['localhost:3000', 'store.ecosystem.com.ar', 'store-ecosystem.verce.app', 'menu.ecosystem.com.ar'],
     favicon: '/statics/favicon.svg',
     host: '',
   },
