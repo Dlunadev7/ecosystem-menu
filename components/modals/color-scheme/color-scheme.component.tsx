@@ -81,7 +81,7 @@ export const ColorScheme = ({ opened, onRequestClose, store }: any) => {
           </Group>
           <ColorInput
             label="Color de las sombras"
-            format='hexa'
+            format='hex'
             withEyeDropper={false}
             {...form.getInputProps("shadow.color")}
           />
