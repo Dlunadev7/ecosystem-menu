@@ -12,6 +12,7 @@ import { SettingsTab } from "@/components/tabs/store/settings/settings-tab.compo
 import { UsersTab } from "@/components/tabs/store/users/user-tab.component";
 
 import styles from "../../styles/global.module.scss";
+import { BackgroundColor } from "@/shared/utils/theme/background.util";
 
 export default function DashboardStoreScreen() {
   const router = useRouter();
@@ -25,13 +26,12 @@ export default function DashboardStoreScreen() {
     );
   }
 
-
   return (
     <Container fluid className={styles.container}>
       <Head title={`${store.name}`} />
       <Header allowBack />
       <Tabs defaultValue="products" mt={50}>
-        <ScrollArea w="100%" type="never" className={styles.tabs}>
+        <ScrollArea w="100%" type="never" className={styles.tabs} bg={BackgroundColor()}>
           <Tabs.List h={50} style={{ flexWrap: 'nowrap' }}>
             <Tabs.Tab value="products">Productos</Tabs.Tab>
             <Tabs.Tab value="categories">Categorias</Tabs.Tab>

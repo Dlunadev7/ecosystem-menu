@@ -58,7 +58,7 @@ export function StoreAddress({ opened, onRequestClose, store }: StoreAddressProp
   };
 
   return (
-    <Modal opened={opened} onClose={onClose}>
+    <Modal title="Dirección" opened={opened} onClose={onClose}>
       <form onSubmit={form.onSubmit(onStoreUpdate)}>
         <Stack>
           <Group grow>

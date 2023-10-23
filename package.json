@@ -1,5 +1,5 @@
 {
-  "name": "mantine-minimal-next-template",
+  "name": "ecosystem-menu",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ecosystem-ar/sdk": "^0.4.10",
+    "@ecosystem-ar/sdk": "^0.6.10",
     "@emotion/react": "^11.10.6",
     "@emotion/server": "^11.10.0",
     "@mantine/carousel": "^7.1.0",
@@ -30,6 +30,7 @@
     "dayjs": "^1.11.9",
     "embla-carousel-react": "^8.0.0-rc14",
     "leaflet": "^1.9.4",
+    "libphonenumber-js": "^1.10.48",
     "next": "13.2.3",
     "react": "18.2.0",
     "react-cropper": "^2.3.2",

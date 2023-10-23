@@ -1,7 +1,7 @@
 import { Accordion, AppShell, Button, Flex, Group, Image, List, Stack, Text, ThemeIcon, Title, em } from "@mantine/core";
 import { ArrowRightIcon } from '@radix-ui/react-icons'
 import { IconBrandWhatsapp } from "@tabler/icons-react";
-import { LANDING_TEXT } from "../utils/landing.text";
+import { LANDING_TEXT } from "../shared/utils/landing.text";
 import { useMediaQuery } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import Link from "next/link";

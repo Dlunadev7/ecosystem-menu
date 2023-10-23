@@ -111,7 +111,7 @@ export function SettingsTab() {
         <Flex gap="xs" justify="flex-start" align="flex-start" direction="row" wrap="nowrap" px={8}>
           <Paper withBorder style={{ overflow: "hidden", width: 250, height: 125 }}>
             <Flex>
-              <Image width={125} height={125} src={logo} style={{ borderRadius: 8 }} alt="" />
+              <Image w={125} h={125} src={logo} style={{ borderRadius: 8 }} alt="" />
               <Stack align="flex-end" p="xs" justify="end" style={{ width: "100%" }}>
                 <Text>Logo</Text>
                 {store.avatar ? (

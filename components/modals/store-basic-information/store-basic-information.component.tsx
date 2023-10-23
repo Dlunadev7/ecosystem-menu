@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 
 import { StoreEntity } from "@ecosystem-ar/sdk";
-import { Button, Group, LoadingOverlay, Modal, Stack, TextInput, Textarea } from "@mantine/core";
+import { Button, Group, LoadingOverlay, Modal, Stack, Text, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 import { useTenant } from "@/shared/hooks/tenant";
 import { notifications } from "@mantine/notifications";
 import { NOTIFICATIONS } from "@/shared/constants/notifications";
 import { useSDK } from "@/shared/api";
+import { ValidatePhoneNumber } from "@/shared/utils/phone.util";
 
 type StoreBasicInformationProps = {
   store: StoreEntity,
@@ -25,6 +26,7 @@ export function StoreBasicInformation({ store, opened, onRequestClose }: StoreBa
       name: store?.name,
       email: store?.email,
       description: store?.description,
+      phone: store?.phone,
     },
   });
 
@@ -41,7 +43,16 @@ export function StoreBasicInformation({ store, opened, onRequestClose }: StoreBa
   const onStoreUpdate = () => {
     notifications.show(NOTIFICATIONS.STORE_UPDATE_PENDING);
     setUpdatingStore(true);
-    stores.update(store.id, form.values)
+
+    const updates = {...form.values};
+
+    const { isValid, number } = ValidatePhoneNumber(`${updates.phone}`);
+    
+    if (isValid) {
+      updates.phone = number;
+    }
+
+    stores.update(store.id, updates)
       .then(() => notifications.update(NOTIFICATIONS.STORE_UPDATE_SUCCESS))
       .catch(() => notifications.update(NOTIFICATIONS.STORE_UPDATE_FAILED))
       .finally(() => {
@@ -55,17 +66,25 @@ export function StoreBasicInformation({ store, opened, onRequestClose }: StoreBa
   }, [store]);
 
   return (
-    <Modal opened={opened} onClose={onClose}>
+    <Modal title="Información básica" opened={opened} onClose={onClose}>
       <form onSubmit={form.onSubmit(onStoreUpdate)}>
         <Stack>
           <Group grow>
-            <TextInput label="Nombre" value={store?.name} disabled />
+            <TextInput label="Nombre" defaultValue={store?.name} required {...form.getInputProps("name")}/>
             <TextInput
               label="URL de la tienda"
               value={`https://${host}/${store.slug}`}
               disabled
             />
           </Group>
+          <TextInput
+            label="Número de teléfono"
+            description="Se utilizara para tomar pedidos por WhatsApp"
+            leftSection={<Text fz="sm" mx="sm">+54</Text>}
+            placeholder="011 23456789"
+            value={ValidatePhoneNumber(`${form.values.phone}`).national}
+            onChange={(event) => form.setFieldValue("phone", event.currentTarget.value)}
+          />
           <TextInput
             withAsterisk
             label="Email"
