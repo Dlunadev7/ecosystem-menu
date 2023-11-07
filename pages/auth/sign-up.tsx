@@ -29,10 +29,7 @@ import { EmojiTags } from "@/shared/utils/emoji";
 import { useSDK } from "@/shared/api";
 
 export default function SignupScreen() {
-  /**
-   * 
-   * @todo Verificar que todo funcione bien!
-   */
+
   const tenant = useTenant();
   const { loading } = useAuth();
   const { users } = useSDK();
