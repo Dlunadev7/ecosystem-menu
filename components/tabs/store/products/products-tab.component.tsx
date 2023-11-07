@@ -7,7 +7,6 @@ import { ProductModal } from "@/components/modals/product/product.component";
 import { useCategories } from "@/shared/hooks/categories";
 import { useProducts } from "@/shared/hooks/products/products";
 import { GenerateAvatar } from "@/shared/utils/avatars";
-import { GRID_BREAKPOINTS } from "@/shared/constants/grid-breakpoints";
 
 import styles from './products-tab.module.scss';
 import { ProductEntity } from "@ecosystem-ar/sdk";
@@ -17,12 +16,15 @@ import { Emoji } from "@/components/emojis/Emoji";
 import { EmojiTags } from "@/shared/utils/emoji";
 import { PageUp, ConfirmationModal } from "@components";
 import { useSDK } from "@/shared/api";
+import { useRouter } from "next/router";
+import { useStore } from "@/shared/hooks/stores/store";
 
 export function ProductsTabs({ store }: { store: string }) {
+  const router = useRouter();
+  const sdk = useSDK();
   const { categories, loading_categories } = useCategories(store);
   const { products, loading_products, refetch_products } = useProducts(store);
-  const sdk = useSDK();
-  
+  const {store: _store} = useStore(router.query.slug as string);
   const [categoryFilter, setCategoryFilter] = useState<any>([]);
   const [productNameFilter, setProductNameFilter] = useState<any>();
   const [createProduct, setCreateProduct] = useState(false);
@@ -61,7 +63,7 @@ export function ProductsTabs({ store }: { store: string }) {
   const MemoizedProducts = useMemo(() => MemoizedProductsFilteredByCategory.filter(filterByProductName).map((product) => (
       <Card key={product.id} withBorder style={{ overflow: 'unset' }}>
         <Flex gap={16} h="100%" wrap="nowrap">
-          <Image w={50} h={50} radius={50} src={GenerateAvatar(product.images[0], product.name, product.images?.length)} alt={`${product.name} image`} />
+          <Image w={50} h={50} radius={50} src={Boolean(product.images.length) ? product.images[0].uri : _store?.placeholder_image?.uri} alt={`${product.name} image`} />
           <Stack gap={2} justify="space-between" style={{ width : '100%', height: '100%' }}>
             <div>
               <Flex justify="space-between" align="start">
@@ -110,7 +112,7 @@ export function ProductsTabs({ store }: { store: string }) {
       <Toolbar>
         <Autocomplete
           placeholder="Filtrar por nombre"
-          data={MemoizedProductsFilteredByCategory.map((product) => ({ label: product.name, value: product.name }))}
+          data={MemoizedProductsFilteredByCategory.map((product) => ({ label: product.id, value: product.id }))}
           size="sm"
           style={{ flex: 1 }}
           maxDropdownHeight={150}

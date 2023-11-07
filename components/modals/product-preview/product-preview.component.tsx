@@ -12,7 +12,7 @@ import { notifications } from "@mantine/notifications";
 
 
 const TRANSITION_DURATION = 200;
-function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPreviewProps) {
+function ProductPreview({ product, store, onRequestClose, onAddItemToCart }: ProductPreviewProps) {
   const [active, setActive] = useState(false);
   const [embla, setEmbla] = useState<Embla | null>(null);
   const [count, handlers] = useCounter(1, { min: 1, max: 10 });
@@ -51,6 +51,7 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
   }
 
   const has_images = Boolean(product.images.length);
+  const defaultProductImage = store?.placeholder_image?.uri as string;
   const price = Number(product.price?.amount).toFixed(2);
 
   return (
@@ -64,7 +65,7 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
       <Modal.Overlay />
       <Modal.Content>
         <Modal.Body>
-          {has_images && (
+          {has_images ? (
             <Carousel
               getEmblaApi={setEmbla}
               align="start"
@@ -80,6 +81,10 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart }: ProductPre
                 </Carousel.Slide>
               ))}
             </Carousel>
+          ) :  (
+            <AspectRatio ratio={1/1}>
+              <NextImage src={defaultProductImage} alt={`${product.name}`} priority fill sizes="500px" placeholder="empty" />
+            </AspectRatio>
           )}
           <Stack align="normal" p={16} gap={2}>
             <Text fw="bold" tt="uppercase" c="dimmed" size="xs">
