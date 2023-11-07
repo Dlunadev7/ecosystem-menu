@@ -53,8 +53,6 @@ export const SocialNetwork = ({ opened, onRequestClose, store }: any) => {
     setSocialsToLink(initialValues)
   };
 
-  console.log(form.values.social)
-
   const socialsToUpload = (url: SocialNetworkEnum[], socials: any) => {
     if (!socials || !socials.length) return url;
     return url.filter((networks: any) => !socials.map((social: any) => social.url).includes(networks.url));
