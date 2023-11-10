@@ -185,7 +185,7 @@ export function SettingsTab() {
           </Paper>
           <Paper withBorder style={{ overflow: "hidden", width: 250, height: 125 }}>
             <Flex>
-              <Image width={125} height={125} src={store.qr?.uri || RandomAvatar(store.name)} style={{ borderRadius: 8 }} alt={store.qr.uri} />
+              <Image width={125} height={125} src={store.qr?.uri || RandomAvatar(store.name)} style={{ borderRadius: 8 }} alt={store.qr?.uri} />
               <Stack align="flex-end" p="xs" justify="end" style={{ width: "100%" }}
               >
                 <Text>QR</Text>

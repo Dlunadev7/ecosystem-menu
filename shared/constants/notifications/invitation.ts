@@ -12,7 +12,7 @@ export const INVITATION = {
     loading: false,
     title: 'No pudimos enviar la invitación',
     message: 'Inténtalo más tarde y si el problema continúa, contáctanos.',
-    autoClose: false,
+    autoClose: 3000,
     color: 'red',
   },
   CANCEL_INVITATION_PENDING: {
@@ -36,7 +36,7 @@ export const INVITATION = {
     loading: false,
     title: 'No pudimos cancelar la invitación',
     message: 'Inténtalo más tarde y si el problema continúa, contáctanos.',
-    autoClose: false,
+    autoClose: 3000,
     color: 'red',
   },
   ACCEPT_INVITATION_PENDING: {
@@ -60,7 +60,7 @@ export const INVITATION = {
     loading: false,
     title: 'No pudimos aceptar la invitación',
     message: 'Inténtalo más tarde y si el problema continúa, contáctanos.',
-    autoClose: false,
+    autoClose: 3000,
     color: 'red',
   },
 };
