@@ -25,7 +25,7 @@ export const OrderPreview = ({ opened, onRequestClose, order, onUpdateProductQua
 
   const onSubmit = () => {
     const PRODUCTS = order.products.map(({ product, quantity }) => `${quantity}x ${product.name}`).join('\n');
-    const TOTAL = `${Math.floor(order.total).toFixed(2)}`;
+    const TOTAL = `${Number(order.total).toFixed(2)}`;
     const TIMESTAMP = dayjs().format('DD/MM/YYYY HH:mm');
     const NOMBRE_TIENDA = order.store.name;
     const NOTE = order.note || observations || "Sin observaciones.";
@@ -72,7 +72,7 @@ export const OrderPreview = ({ opened, onRequestClose, order, onUpdateProductQua
 
   const MemoizedProductsTicket = useMemo(() => order.products.map(({ product, quantity }) => (
     <Flex key={product.id} justify="space-between">
-      <Text fz="xs" style={{ flex: 1 }} lineClamp={1}>
+      <Text fz="xs" tt="lowercase" style={{ flex: 1 }} lineClamp={1}>
         {product.name}
       </Text>
       <Text fz="xs" style={{ width: 30 }} ta="center">
@@ -127,7 +127,7 @@ export const OrderPreview = ({ opened, onRequestClose, order, onUpdateProductQua
               Total
             </Text>
             <Text fz="sm" fw="bold" ta="end">
-              {`$ ${Math.floor(order.total).toFixed(2)}`}
+              {`$ ${(order.total).toFixed(2)}`}
             </Text>
           </Flex> 
           <Space h="lg" />
