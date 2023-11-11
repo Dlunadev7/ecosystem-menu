@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
 import {
   ActionIcon,
+  AspectRatio,
   Container,
   Flex,
   MantineProvider,
@@ -17,9 +18,17 @@ import {
   Tabs,
   Text,
   Title,
-  createTheme
+  createTheme,
 } from "@mantine/core";
-import { CategoryEntity, EcosystemStoreSDK, IDType, ProductEntity, StoreEntity } from "@ecosystem-ar/sdk";
+import {
+  CategoryEntity,
+  EcosystemStoreSDK,
+  IDType,
+  MediaEntity,
+  ProductEntity,
+  StoreEntity,
+} from "@ecosystem-ar/sdk";
+import Autoplay from 'embla-carousel-autoplay';
 
 import { CartButton, Footer, Head, PageUp, ProductListItem } from "@components";
 import { RandomAvatar } from "@/shared/utils/avatars";
@@ -28,21 +37,34 @@ import { GRID_BREAKPOINTS } from "@/shared/constants/grid-breakpoints";
 import { BackgroundColor } from "@/shared/utils/theme/background.util";
 import { SocialNetworkIcon } from "@/shared/utils/social-networks";
 import { Cart, CartItem } from "@/shared/types";
+import { Carousel } from "@mantine/carousel";
+import { useDevice } from "@/shared/utils/hooks/device";
 import { OrderPreview } from "@/components/modals/order-peview/order-preview.component";
 
-const ProductPreview = dynamic(() => import('@/components/modals/product-preview/product-preview.component'));
+const ProductPreview = dynamic(
+  () => import("@/components/modals/product-preview/product-preview.component")
+);
 
 type StoreSpotlightProps = {
   store: StoreEntity;
   products: ProductEntity[];
   categories: CategoryEntity[];
   theme: MantineTheme;
-}
+};
 
-export default function StoreScreen({ store, products, categories, theme }: StoreSpotlightProps) {
+export default function StoreScreen({
+  store,
+  products,
+  categories,
+  theme,
+}: StoreSpotlightProps) {
   const router = useRouter();
 
-  const [productPreview, setProductPreview] = useState<ProductEntity | null>(null);
+  const { isDesktop } = useDevice();
+
+  const [productPreview, setProductPreview] = useState<ProductEntity | null>(
+    null
+  );
   const [defaultTab, setDefaultTab] = useState("");
   const [showOrder, setShowOrder] = useState(false);
   const [cart, setCart] = useState<Cart>({
@@ -54,21 +76,26 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
     },
     total: 0,
     products: [],
-    total_products: 0
+    total_products: 0,
   });
 
-  const MemoizedTabs = useMemo(() => [...categories, DEFAULT_CATEGORY].map(({ id, name }) => (
-    <Tabs.Tab key={id} value={id} tt="capitalize" fw="regular">
-      {name}
-    </Tabs.Tab>
-  )), [categories]);
+  const MemoizedTabs = useMemo(
+    () =>
+      [...categories, DEFAULT_CATEGORY].map(({ id, name }) => (
+        <Tabs.Tab key={id} value={id} tt="capitalize" fw="regular">
+          {name}
+        </Tabs.Tab>
+      )),
+    [categories]
+  );
 
   useEffect(() => {
     if (!defaultTab) {
-      const default_tab = router.query.category as string || categories[0]?.id;
+      const default_tab =
+        (router.query.category as string) || categories[0]?.id;
       setDefaultTab(default_tab);
     }
-  }, [categories])
+  }, [categories]);
 
   const MemoizedGroupedProducts = useMemo(() => {
     return products.reduce((acc, curr) => {
@@ -76,9 +103,9 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
       if (acc[current_category]) {
         return { ...acc, [current_category]: [...acc[current_category], curr] };
       } else {
-        return { ...acc, [current_category]: [curr] }
+        return { ...acc, [current_category]: [curr] };
       }
-    }, {} as {[index: IDType]: ProductEntity[]})
+    }, {} as { [index: IDType]: ProductEntity[] });
   }, [products]);
 
   const onTabChange = (value: any) => {
@@ -147,16 +174,45 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
   }
 
   const listStyle: MantineStyleProp = {
-    position: "sticky", 
+    position: "sticky",
     top: 0,
     zIndex: 1,
     backgroundColor: BackgroundColor(store.theme?.color.scheme),
-  }
+  };
+
+    const autoplay = useRef(Autoplay({ delay: 5000 }));
+
 
   return (
     <MantineProvider classNamesPrefix="ecosystem" theme={theme} forceColorScheme={store.theme?.color.scheme}>
       <Container px={0} maw={980} style={{ margin: 'auto' }}>
         <Head title={store.name} description={store.description} slug={store.slug} />
+        <Carousel
+            slideSize="100%"
+            slideGap="xs"
+            controlSize={14}
+            loop
+            draggable={false}
+            withControls={false}
+            plugins={[autoplay.current]}
+            onMouseEnter={autoplay.current.stop}
+            onMouseLeave={autoplay.current.reset}
+            mt={isDesktop ? 12 : 0}
+          >
+            {
+              store?.banners?.map((media: MediaEntity) => {
+                return (
+                  <Carousel.Slide key={media.id}>
+                    <AspectRatio ratio={isDesktop ? 3/0.8 : 21/9}>
+                      <Image src={media.uri} alt={media.id} fill style={{
+                        borderRadius: isDesktop ? 16 : 0
+                      }} />
+                    </AspectRatio>
+                  </Carousel.Slide>
+                )
+              })
+            }
+          </Carousel>
         <Stack align="center" mb={64}>
           <Paper h={120} shadow="md" radius={8} mt={64} style={{ overflow: 'hidden' }}>
             <Image
@@ -199,7 +255,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
               {[...categories, DEFAULT_CATEGORY].map((category) => (
                 <Tabs.Panel key={category.id} value={category.id}>
                   <SimpleGrid p={16} spacing="md" verticalSpacing="lg" cols={GRID_BREAKPOINTS} mb={64}>
-                    {MemoizedGroupedProducts[category.id]?.map((product) => <ProductListItem key={product.id} product={product} onSelect={onPreviewOpen} />)}
+                    {MemoizedGroupedProducts[category.id]?.map((product) => <ProductListItem placeholder_image={store.placeholder_image?.uri || ""} key={product.id} product={product} onSelect={onPreviewOpen} />)}
                   </SimpleGrid>
                 </Tabs.Panel>
               ))}
@@ -211,6 +267,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
           product={productPreview}
           onRequestClose={onPreviewClose}
           hasPhone={Boolean(store.phone)}
+          store={store}
         />
         <OrderPreview
           onRequestClose={() => setShowOrder(false)}
@@ -224,57 +281,65 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
       </Container>
       <Footer />
     </MantineProvider>
-  )
+  );
 }
 
 export async function getStaticProps({ params }: { params: { slug: string } }) {
   const { slug } = params;
-  const SSG_SDK = EcosystemStoreSDK({ base_uri: process.env.NEXT_PUBLIC_API_URI });
-  
+  const SSG_SDK = EcosystemStoreSDK({
+    base_uri: process.env.NEXT_PUBLIC_API_URI,
+  });
+
   const store = await SSG_SDK.stores.findBySlug(slug);
 
-  const [ products, categories ] = await Promise.all([
+  const [products, categories] = await Promise.all([
     SSG_SDK.products.findByStoreID(store.id),
-    SSG_SDK.categories.findByStoreID(store.id)
+    SSG_SDK.categories.findByStoreID(store.id),
   ]);
 
-  const theme = createTheme(store.theme ? {
-    primaryColor: 'brand',
-    colors: {
-      brand: store.theme.color.brand,
-    },
-    shadows: {
-      xs: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
+  const theme = createTheme(
+    store.theme
+      ? ({
+          primaryColor: "brand",
+          colors: {
+            brand: store.theme.color.brand,
+          },
+          shadows: {
+            xs: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
           0 calc(0.0625rem*var(--mantine-scale)) calc(0.125rem*var(--mantine-scale)) ${store.theme.shadow.color}1A`,
-      sm: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
+            sm: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
           ${store.theme.shadow.color}0D 0 calc(0.625rem*var(--mantine-scale)) calc(0.9375rem*var(--mantine-scale)) calc(-0.3125rem*var(--mantine-scale)),
           ${store.theme.shadow.color}0A 0 calc(0.4375rem*var(--mantine-scale)) calc(0.4375rem*var(--mantine-scale)) calc(-0.3125rem*var(--mantine-scale))`,
-      md: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
+            md: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
           ${store.theme.shadow.color}0D 0 calc(1.25rem*var(--mantine-scale)) calc(1.5625rem*var(--mantine-scale)) calc(-0.3125rem*var(--mantine-scale)),
           ${store.theme.shadow.color}0A 0 calc(0.625rem*var(--mantine-scale)) calc(0.625rem*var(--mantine-scale)) calc(-0.3125rem*var(--mantine-scale))`,
-      lg: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
+            lg: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
           ${store.theme.shadow.color}0D 0 calc(1.75rem*var(--mantine-scale)) calc(1.4375rem*var(--mantine-scale)) calc(-0.4375rem*var(--mantine-scale)),
           ${store.theme.shadow.color}0A 0 calc(0.75rem*var(--mantine-scale)) calc(0.75rem*var(--mantine-scale)) calc(-0.4375rem*var(--mantine-scale))`,
-      xl: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
+            xl: `0 calc(0.0625rem*var(--mantine-scale)) calc(0.1875rem*var(--mantine-scale)) ${store.theme.shadow.color}0D,
           ${store.theme.shadow.color}0D 0 calc(2.25rem*var(--mantine-scale)) calc(1.75rem*var(--mantine-scale)) calc(-0.4375rem*var(--mantine-scale)),
           ${store.theme.shadow.color}0A 0 calc(1.0625rem*var(--mantine-scale)) calc(1.0625rem*var(--mantine-scale)) calc(-0.4375rem*var(--mantine-scale))`,
-    }    
-  } as any : {});
+          },
+        } as any)
+      : {}
+  );
 
   return {
     props: { store, products, categories, theme },
     revalidate: 10,
-  }
+  };
 }
 
 export async function getStaticPaths() {
-  const SSG_SDK = EcosystemStoreSDK({ base_uri: process.env.NEXT_PUBLIC_API_URI });
+  const SSG_SDK = EcosystemStoreSDK({
+    base_uri: process.env.NEXT_PUBLIC_API_URI,
+  });
 
   const stores = await SSG_SDK.stores.findAll();
- 
+
   const paths = stores.map((store: Partial<StoreEntity>) => ({
     params: { slug: store.slug },
-  }))
- 
-  return { paths, fallback: 'blocking' }
+  }));
+
+  return { paths, fallback: "blocking" };
 }

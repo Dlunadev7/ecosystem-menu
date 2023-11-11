@@ -11,7 +11,7 @@ import { Counter } from "@/components/counter/counter.component";
 
 
 const TRANSITION_DURATION = 200;
-function ProductPreview({ product, onRequestClose, onAddItemToCart, hasPhone }: ProductPreviewProps) {
+function ProductPreview({ product, onRequestClose, onAddItemToCart, hasPhone, store }: ProductPreviewProps) {
   const [active, setActive] = useState(false);
   const [embla, setEmbla] = useState<Embla | null>(null);
   const [count, setCount] = useState(1);
@@ -51,6 +51,7 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart, hasPhone }: 
   }
 
   const has_images = Boolean(product.images.length);
+  const defaultProductImage = store?.placeholder_image?.uri as string;
   const price = Number(product.price?.amount).toFixed(2);
 
   return (
@@ -65,7 +66,7 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart, hasPhone }: 
       <Modal.Overlay />
       <Modal.Content>
         <Modal.Body>
-          {has_images && (
+          {has_images ? (
             <Carousel
               getEmblaApi={setEmbla}
               align="start"
@@ -81,6 +82,10 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart, hasPhone }: 
                 </Carousel.Slide>
               ))}
             </Carousel>
+          ) :  (
+            <AspectRatio ratio={1/1}>
+              <NextImage src={defaultProductImage} alt={`${product.name}`} priority fill sizes="500px" placeholder="empty" />
+            </AspectRatio>
           )}
           <Stack align="normal" p={16} gap={2}>
             <Text fw="bold" tt="uppercase" c="dimmed" size="xs">

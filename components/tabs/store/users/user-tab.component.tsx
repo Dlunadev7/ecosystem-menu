@@ -46,7 +46,7 @@ export function InviteUser({ store, open, onRequestClose }: { store: StoreEntity
         throw new Error("¡No podes invitarte a vos mismo!");
       }
   
-      if (invitations.some((item) => item.guest.email === _user.email)) {
+      if (invitations.some((item) => item.guest.email === _user.email && !item.deleted_at)) {
         throw new Error("El usuario ya está invitado.");
       }
   
@@ -231,21 +231,31 @@ export function UsersTab({ store }: { store: StoreEntity }) {
       header: 'Estado',
       render: (invitation: InvitationEntity) => {
         const { accepted } = invitation;
-
+        
+        const dateOfExpiration = dayjs(invitation.created_at).add(7).format();
+        const validateDateOfExpiration = dayjs().isAfter(dateOfExpiration, "day");
+        
         const color = accepted === undefined ? 'orange' : accepted ? 'green' : 'red';
-        const label = accepted === undefined ? 'PENDIENTE' : accepted ? 'ACEPTADA' : 'RECHAZADA'
-
+        let label = accepted === undefined ? 'PENDIENTE' : accepted ? 'ACEPTADA' : 'RECHAZADA';
+        
+        if(!accepted && validateDateOfExpiration) {
+          label = 'EXPIRADO'
+        };
+        
         return !invitation.deleted_at ? <Badge color={color} variant="light">{label}</Badge> : <Badge size="sm" color="gray" variant="light">CANCELADA</Badge>
       },
     },
     {
       header: '',
       render: (invitation: InvitationEntity) => {
-        return !invitation.deleted_at &&  (
+        const dateOfExpiration = dayjs(invitation.created_at).add(7).format();
+        const validateDateOfExpiration = dayjs().isAfter(dateOfExpiration, "day");
+
+        return !invitation.deleted_at && (
           <ActionIcon
             color="red"
             size="xs"
-            disabled={Boolean(invitation.accepted)}
+            disabled={Boolean(invitation.accepted) || validateDateOfExpiration}
             onClick={() => onCanceInvitation(invitation)}
           >
             {loadingInvitationCancellation ? <Loader /> : <IconBan size={24} stroke={1} />}
