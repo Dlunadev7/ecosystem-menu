@@ -216,13 +216,18 @@ export function SettingsTab() {
           </Paper>
           <Paper withBorder style={{ overflow: "hidden", width: 250, height: 125 }}>
             <Flex>
-              <div className={styles.animated_card}>
                 {
-                  store.banners?.map((media) => (
-                    <Image src={media.uri} alt={media.uri} key={media.id} width={125} height={125} />
-                  ))
+                  Boolean(store?.banners?.length) ? 
+                    <div className={styles.animated_card}>
+                      {
+                        store.banners?.map((media) => (
+                          <Image src={media.uri} alt={media.uri} key={media.id} width={125} height={125} />
+                        ))
+                      }
+                    </div>
+                  : 
+                    <Image width={125} height={125} src={RandomAvatar(store.name)} style={{ borderRadius: 8 }} alt={store.name} />
                 }
-              </div>
               <Stack align="flex-end" p="xs" justify="end" style={{ width: "100%" }}>
                 <Text>Banner</Text>
                 {Boolean(store?.banners?.length) ? (
