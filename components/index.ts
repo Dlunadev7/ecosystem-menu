@@ -22,3 +22,4 @@ export { FileButton } from "./file-button/file-button.component";
 export { Card } from "./card/card.component";
 export { ProductListItem  } from "./product-item/product-list-item.component"
 export { CartButton } from "./cart-button/cart-button.component";
+export { Counter } from "./counter/counter.component";

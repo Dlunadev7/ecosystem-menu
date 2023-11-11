@@ -32,6 +32,7 @@
     "leaflet": "^1.9.4",
     "libphonenumber-js": "^1.10.48",
     "next": "13.2.3",
+    "qr-code-styling": "^1.6.0-rc.1",
     "react": "18.2.0",
     "react-cropper": "^2.3.2",
     "react-dom": "18.2.0",

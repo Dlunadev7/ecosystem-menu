@@ -22,7 +22,7 @@ export const LANDING_TEXT = {
   },
   FAQS: [
     { title: '¿Cuánto sale todo esto?', content: 'Nuestro enfoque es claro y sencillo: transparencia total. Te cobramos 10 dólares más un 10% de comisión de Mercado Pago, todo en pesos ARGENTINOS. El primer día de cada mes, convertimos esos 10 dólares a nuestra moneda según la tasa real del dólar, y luego agregamos la comisión de Mercado Pago. Así, siempre sabrás exactamente cuánto pagarás. Sin sorpresas, sin complicaciones.' },
-    { title: '¿Cada cuánto aumenta el costo?', content: 'Queremos que formes parte de nuestra comunidad durante mucho tiempo. Por eso, te garantizamos que mantendremos las tarifas actuales hasta el próximo Mundial. Así, tendrás la tranquilidad de saber que tu inversión será estable a largo plazo. ¡Un compromiso sólido contigo y tu negocio!' },
+    { title: '¿Cada cuánto aumenta el costo?', content: 'Queremos que formes parte de nuestra comunidad durante mucho tiempo. Por eso, te garantizamos que mantendremos las tarifas actuales hasta el próximo Mundial. Así, tendrás la tranquilidad de saber que tu inversión será estable a largo plazo. ¡Un compromiso sólido con vos y tu negocio!' },
     { title: '¿Cómo funciona el informe semanal de la IA?', content: 'Todas las semanas la inteligencia artificial analiza estadísticas pasadas, compara resultados y ofrece valiosas recomendaciones para mejorar tu negocio.' },
     { title: '¿Es fácil personalizar mi tienda?', content: 'Preparamos el panel para que sea lo más intuitivo posible. Con solo tres clics (o cuatro, ¿quién sabe?), podés cambiar todo el look de tu menú. Es fácil y rápido. ¡Probalo vos mismo y sorprendete!' },
     { title: '¿Cómo integro Mercado Pago en mi tienda?', content: '', disabled: true },
