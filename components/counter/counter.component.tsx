@@ -1,14 +1,15 @@
 import { ActionIcon, NumberInput } from "@mantine/core";
 import { useCounter } from "@mantine/hooks";
-import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+import { MinusIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 
 type CounterProps = {
   value: number;
   onChange: (value: number) => void;
+  trash?: boolean;
 }
 
-export function Counter({ value, onChange }: CounterProps) {
+export function Counter({ value, onChange, trash }: CounterProps) {
   const [count, handlers] = useCounter(value, { min: 1, max: 10 });
 
   const onIncrement = () => {
@@ -19,14 +20,20 @@ export function Counter({ value, onChange }: CounterProps) {
     handlers.decrement();
   }
 
+  const onRemove = () => {
+    onChange(0);
+  }
+
   useEffect(() => {
     if (count !== value) onChange(count);
   }, [count]);
 
+  const trashable = trash && count === 1;
+
   return (
     <ActionIcon.Group>
-      <ActionIcon size={30} variant="outline" onClick={onDecrement}>
-        <MinusIcon />
+      <ActionIcon size={30} variant="outline" onClick={trashable ? onRemove : onDecrement}>
+        {trashable ? <TrashIcon /> : <MinusIcon />}
       </ActionIcon>
       <NumberInput
         clampBehavior="none"

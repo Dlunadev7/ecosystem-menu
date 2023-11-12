@@ -65,7 +65,7 @@ export const OrderPreview = ({ opened, onRequestClose, order, onUpdateProductQua
             {product.description}
           </Text>
         </Stack>
-        <Counter value={quantity} onChange={(product_quantity) => onUpdateProductQuantity({ product, quantity }, product_quantity)} />
+        <Counter trash value={quantity} onChange={(product_quantity) => onUpdateProductQuantity({ product, quantity }, product_quantity)} />
       </Flex>
     </Paper>
   )), [order.products]);
@@ -146,7 +146,7 @@ export const OrderPreview = ({ opened, onRequestClose, order, onUpdateProductQua
       <Space h="lg" />
       <Flex gap="md">
         <Button fullWidth onClick={active === 0 ? onRequestClose : prevStep} variant="subtle">{active === 0 ? 'Cerrar' : 'Atrás'}</Button>
-        <Button fullWidth onClick={active === 1 ? onSubmit : nextStep}>{ active === 1 ? 'Enviar' : 'Siguiente' }</Button>
+        <Button fullWidth disabled={Boolean(!order.products.length)} onClick={active === 1 ? onSubmit : nextStep}>{ active === 1 ? 'Enviar' : 'Siguiente' }</Button>
       </Flex>
     </Modal>
   )

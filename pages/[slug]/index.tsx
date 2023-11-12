@@ -163,14 +163,21 @@ export default function StoreScreen({
   }
 
   const onUpdateQuantity = (item: CartItem, quantity: number) => {
-    const updated_products = cart.products.map(product => {
-      if (product.product.id === item.product.id) {
-        return { ...product, quantity }
-      }
-      return product;
-    });
+    const to_remove = Boolean(!quantity);
+    let updated_products = [];
 
-    onCartRecalculate(updated_products);
+    if (to_remove) {
+      updated_products = cart.products.filter(product => product.product.id !== item.product.id);
+    } else {
+      updated_products = cart.products.map(product => {
+        if (product.product.id === item.product.id) {
+          return { ...product, quantity }
+        }
+        return product;
+      });
+    }
+
+    return onCartRecalculate(updated_products);
   }
 
   const listStyle: MantineStyleProp = {
@@ -188,31 +195,31 @@ export default function StoreScreen({
       <Container px={0} maw={980} style={{ margin: 'auto' }}>
         <Head title={store.name} description={store.description} slug={store.slug} />
         <Carousel
-            slideSize="100%"
-            slideGap="xs"
-            controlSize={14}
-            loop
-            draggable={false}
-            withControls={false}
-            plugins={[autoplay.current]}
-            onMouseEnter={autoplay.current.stop}
-            onMouseLeave={autoplay.current.reset}
-            mt={isDesktop ? 12 : 0}
-          >
-            {
-              store?.banners?.map((media: MediaEntity) => {
-                return (
-                  <Carousel.Slide key={media.id}>
-                    <AspectRatio ratio={isDesktop ? 3/0.8 : 21/9}>
-                      <Image src={media.uri} alt={media.id} fill style={{
-                        borderRadius: isDesktop ? 16 : 0
-                      }} />
-                    </AspectRatio>
-                  </Carousel.Slide>
-                )
-              })
-            }
-          </Carousel>
+          slideSize="100%"
+          slideGap="xs"
+          controlSize={14}
+          loop
+          draggable={false}
+          withControls={false}
+          plugins={[autoplay.current]}
+          onMouseEnter={autoplay.current.stop}
+          onMouseLeave={autoplay.current.reset}
+          mt={isDesktop ? 12 : 0}
+        >
+          {
+            store?.banners?.map((media: MediaEntity) => {
+              return (
+                <Carousel.Slide key={media.id}>
+                  <AspectRatio ratio={isDesktop ? 3/0.8 : 21/9}>
+                    <Image src={media.uri} alt={media.id} fill style={{
+                      borderRadius: isDesktop ? 16 : 0
+                    }} />
+                  </AspectRatio>
+                </Carousel.Slide>
+              )
+            })
+          }
+        </Carousel>
         <Stack align="center" mb={64}>
           <Paper h={120} shadow="md" radius={8} mt={64} style={{ overflow: 'hidden' }}>
             <Image
