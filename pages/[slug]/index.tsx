@@ -214,7 +214,7 @@ export default function StoreScreen({
             }
           </Carousel>
         <Stack align="center" mb={64}>
-          <Paper h={120} shadow="md" radius={8} mt={64} style={{ overflow: 'hidden' }}>
+          <Paper h={120} shadow="md" radius={8} mt={store.banners?.length ? -64 : 64} style={{ overflow: 'hidden' }} pos="relative">
             <Image
               width={120}
               height={120}
