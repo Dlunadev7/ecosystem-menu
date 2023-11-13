@@ -11,10 +11,11 @@ type CropperProps = {
   onFinish: (cropped_file: string) => void;
   onCancel: () => void;
   aspectRatio?: number;
+  resizable?: boolean;
 }
 
 export default function Cropper(props: CropperProps) {
-  const { image, onFinish, onCancel, aspectRatio = 1/1 } = props;
+  const { image, onFinish, onCancel, aspectRatio = 1/1, resizable = true } = props;
 
   const [file, setFile] = useState<string | undefined>();
   const cropperRef = useRef<RCropper.ReactCropperElement>(null);
@@ -53,8 +54,8 @@ export default function Cropper(props: CropperProps) {
         aspectRatio={aspectRatio}
         modal={false}
         responsive
-
         viewMode={1}
+        cropBoxResizable={resizable}
       />
       <Group grow>
         <Button onClick={onRequestClose} variant="subtle" leftSection={<IconArrowBack />}>

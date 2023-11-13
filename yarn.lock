@@ -74,10 +74,10 @@
     "@babel/helper-validator-identifier" "^7.22.19"
     to-fast-properties "^2.0.0"
 
-"@ecosystem-ar/sdk@^0.6.10":
-  version "0.6.10"
-  resolved "https://registry.yarnpkg.com/@ecosystem-ar/sdk/-/sdk-0.6.10.tgz#be487947fecf760dd25ff9d38158cc04e889a9a2"
-  integrity sha512-roxJx7bvzivuLceNiZbCcv9rXVSnpDkL194MQCijumzi66sI+FAnvvaA5qLcUgnOr8myzZMcLTC0uMz4/NGVfQ==
+"@ecosystem-ar/sdk@^0.7.10":
+  version "0.7.10"
+  resolved "https://registry.yarnpkg.com/@ecosystem-ar/sdk/-/sdk-0.7.10.tgz#2c6818900aefeca8c5f54b693b31b8df568549cb"
+  integrity sha512-a4Me6fqzF4RpkzUcpiHa1LtCJrXheWEot3o29fF/pRKZG7D4/MZ2Zw63SowGDuZg4M9VpYcuYuYamUe4FS8kvA==
 
 "@emotion/babel-plugin@^11.11.0":
   version "11.11.0"
@@ -264,10 +264,10 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@mantine/carousel@^7.1.0":
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-7.1.0.tgz#31a484accdf77b433d3d6d7225abdbd2d066d5c1"
-  integrity sha512-3WHi0nVjXFfgUwoeJCEglX9PPOsP0Dsiauq31DDy2Cugn5LyxFluaiL7c21nHbs3Fd0If/sjgiBEEa+ZmVStiQ==
+"@mantine/carousel@^7.1.5":
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/@mantine/carousel/-/carousel-7.1.5.tgz#d4ecac3c32959ec9d7e3e4efb9c5739b2ebee9c0"
+  integrity sha512-3V40NtPGKnXks/quPrvY8OAuSYahGxS0CgnqMHADZS4yHukEEN8rAKC6g+JPGbXRFEGUbRXPDAEvlkcKHN5Ykg==
 
 "@mantine/colors-generator@^7.1.3":
   version "7.1.3"
@@ -1182,6 +1182,11 @@ duplexer@^0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/duplexer/-/duplexer-0.1.2.tgz"
   integrity sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==
+
+embla-carousel-autoplay@^8.0.0-rc14:
+  version "8.0.0-rc14"
+  resolved "https://registry.yarnpkg.com/embla-carousel-autoplay/-/embla-carousel-autoplay-8.0.0-rc14.tgz#a1f0d12c9170d94d7bbbb4049c23da467a026925"
+  integrity sha512-ey3MFD6Lti8sAO/bHLvdl+LO19U77SpYVIZP5rsPqFpnRac7bjZt9cSZ5udw9adniN0ckeRe+0y5wy+AYmzQsw==
 
 embla-carousel-react@^8.0.0-rc14:
   version "8.0.0-rc14"
@@ -2799,6 +2804,18 @@ punycode@^2.1.0:
   version "2.1.1"
   resolved "https://registry.npmjs.org/punycode/-/punycode-2.1.1.tgz"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
+
+qr-code-styling@^1.6.0-rc.1:
+  version "1.6.0-rc.1"
+  resolved "https://registry.yarnpkg.com/qr-code-styling/-/qr-code-styling-1.6.0-rc.1.tgz#6c89e185fa50cc9135101085c12ae95b06f1b290"
+  integrity sha512-ModRIiW6oUnsP18QzrRYZSc/CFKFKIdj7pUs57AEVH20ajlglRpN3HukjHk0UbNMTlKGuaYl7Gt6/O5Gg2NU2Q==
+  dependencies:
+    qrcode-generator "^1.4.3"
+
+qrcode-generator@^1.4.3:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/qrcode-generator/-/qrcode-generator-1.4.4.tgz#63f771224854759329a99048806a53ed278740e7"
+  integrity sha512-HM7yY8O2ilqhmULxGMpcHSF1EhJJ9yBj8gvDEuZ6M+KGJ0YY2hKpnXvRD+hZPLrDVck3ExIGhmPtSdcjC+guuw==
 
 queue-microtask@^1.2.2:
   version "1.2.3"

@@ -7,27 +7,31 @@ import { notifications } from '@mantine/notifications';
 import React, { useState } from 'react'
 import { generateColors } from '@mantine/colors-generator';
 
+const initialThemeValues = (store: any) => ({
+  initialValues: {
+    color: {
+      brand: store.theme?.color.brand || DEFAULT_THEME.colors.dark as any,
+      scheme: store.theme?.color.scheme || "light",
+    },
+    product_item: {
+      border_radius: 16,
+    },
+    shadow: {
+      color: store.theme?.shadow.color || DEFAULT_THEME.black,
+    },
+    typography: {
+      font_family: 'Inter',
+      color: store.theme?.typography?.color || DEFAULT_THEME.black,
+    },
+  },
+})
+
 export const ColorScheme = ({ opened, onRequestClose, store }: any) => {
   const { stores } = useSDK();
   const [updatingStore, setUpdatingStore] = useState(false);
-
+  const {initialValues: initialValues} = initialThemeValues(store);
   const form = useForm<StoreTheme>({
-    initialValues: {
-      color: {
-        brand: store.theme?.color.brand || DEFAULT_THEME.colors.dark as any,
-        scheme: store.theme?.color.scheme || "light",
-      },
-      product_item: {
-        border_radius: 16,
-      },
-      shadow: {
-        color: store.theme?.shadow.color || DEFAULT_THEME.black,
-      },
-      typography: {
-        font_family: 'Inter',
-        color: store.theme?.typography?.color || DEFAULT_THEME.black,
-      },
-    },
+    initialValues: initialValues
   });
 
   const onReset = () => {
@@ -37,6 +41,7 @@ export const ColorScheme = ({ opened, onRequestClose, store }: any) => {
   const onClose = () => {
     onReset();
     onRequestClose();
+    form.setValues(initialValues)
   }
 
   const onStoreUpdate = () => {

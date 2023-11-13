@@ -4,5 +4,6 @@ export type SelectProduct = (product: ProductEntity) => void;
 
 export type ProductGridItemProps = {
   product: ProductEntity;
-  onSelect: SelectProduct
+  onSelect: SelectProduct;
+  placeholder_image: string;
 };

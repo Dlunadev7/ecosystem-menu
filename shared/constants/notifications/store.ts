@@ -86,7 +86,7 @@ export const STORE = {
     loading: false,
     title: 'Hubo un error al intentar descargar la imagen',
     message: 'Inténtalo más tarde y si el problema continúa, contáctanos.',
-    autoClose: false,
+    autoClose: 3000,
     color: 'red',
   },
   CHANGE_STORE_AVATAR_PENDING: {
@@ -109,7 +109,53 @@ export const STORE = {
     loading: false,
     title: 'Hubo un problema',
     message: 'Inténtalo más tarde y si el problema continúa, contáctanos.',
+    autoClose: 3000,
+    color: 'red',
+  },
+  UPDATE_STORE_PLACEHOLDER_PENDING: {
+    id: 'UPDATE_STORE_PLACEHOLDER',
+    loading: true,
+    title: 'Actualizando la imagen de producto',
+    message: 'Estamos procesando tu pedido.',
     autoClose: false,
+    withCloseButton: false
+  },
+  UPDATE_STORE_PLACEHOLDER_SUCCESS: {
+    id: 'UPDATE_STORE_PLACEHOLDER',
+    loading: false,
+    title: '¡Actualizamos la imagen de tus productos!',
+    message: 'Tu tienda fue actualizada con éxito.',
+    autoClose: 3000,
+  },
+  UPDATE_STORE_PLACEHOLDER_FAILED: {
+    id: 'UPDATE_STORE_PLACEHOLDER',
+    loading: false,
+    title: 'Hubo un problema',
+    message: 'Inténtalo más tarde y si el problema continúa, contáctanos.',
+    autoClose: 3000,
+    color: 'red',
+  },
+  DELETE_STORE_PLACEHOLDER_PENDING: {
+    id: 'DELETE_STORE_PLACEHOLDER',
+    loading: true,
+    title: 'Eliminando la imagen de tus producto',
+    message: 'Estamos procesando tu pedido.',
+    autoClose: false,
+    withCloseButton: false
+  },
+  DELETE_STORE_PLACEHOLDER_SUCCESS: {
+    id: 'DELETE_STORE_PLACEHOLDER',
+    loading: false,
+    title: '¡Eliminamos la imagen de tus productos!',
+    message: 'Tu tienda fue actualizada con éxito.',
+    autoClose: 3000,
+  },
+  DELETE_STORE_PLACEHOLDER_FAILED: {
+    id: 'DELETE_STORE_PLACEHOLDER',
+    loading: false,
+    title: 'Hubo un problema',
+    message: 'Inténtalo más tarde y si el problema continúa, contáctanos.',
+    autoClose: 3000,
     color: 'red',
   },
 };

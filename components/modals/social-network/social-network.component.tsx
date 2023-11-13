@@ -14,18 +14,23 @@ import { useForm } from "@mantine/form";
 import { useSDK } from "@/shared/api";
 import { NOTIFICATIONS } from "@/shared/constants/notifications";
 import { getSocialNetworkByURL } from "@/shared/helpers/getSocialNetworkByURL";
-import { SocialNetwork as SocialNetworkEnum, SocialNetworks } from "@ecosystem-ar/sdk";
+import { SocialNetwork as SocialNetworkEnum, SocialNetworks, StoreEntity } from "@ecosystem-ar/sdk";
 import { notifications } from "@mantine/notifications";
 import { SocialNetworkIcon } from "@/shared/utils/social-networks";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
+const initialSocialsNetworks = (store: StoreEntity) => ({
+  initialValues: store?.social_networks
+})
+
 export const SocialNetwork = ({ opened, onRequestClose, store }: any) => {
   const { stores } = useSDK();
   const [updatingStore, setUpdatingStore] = useState(false);
-  
+  const { initialValues }  = initialSocialsNetworks(store);
+
   const form = useForm({
     initialValues: {
-      social: store?.social_networks,
+      social: initialValues,
     },
   });
 
@@ -45,6 +50,7 @@ export const SocialNetwork = ({ opened, onRequestClose, store }: any) => {
   const onClose = () => {
     setInputSocialNetwork("")
     onRequestClose();
+    setSocialsToLink(initialValues)
   };
 
   const socialsToUpload = (url: SocialNetworkEnum[], socials: any) => {
@@ -82,6 +88,13 @@ export const SocialNetwork = ({ opened, onRequestClose, store }: any) => {
           onRequestClose();
           setSocialsToUnlink([]);
         });
+    }
+
+    if(!networks_to_upload.length && !networks_to_remove.length) {
+      setUpdatingStore(false);
+      onRequestClose();
+      setSocialsToUnlink([]);
+      notifications.update(NOTIFICATIONS.STORE_UPDATE_SUCCESS)
     }
   };
 

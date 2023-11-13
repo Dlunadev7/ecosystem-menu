@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import { Container, ScrollArea, Tabs, useMantineTheme } from "@mantine/core";
+import { Container, ScrollArea, Tabs } from "@mantine/core";
 import { useAuth } from "@/context/auth/auth.context";
 import { useStore } from "@/shared/hooks/stores/store";
 
@@ -11,8 +11,8 @@ import { SubscriptionTabs } from "@/components/tabs/store/subscription/subscript
 import { SettingsTab } from "@/components/tabs/store/settings/settings-tab.component";
 import { UsersTab } from "@/components/tabs/store/users/user-tab.component";
 
-import styles from "../../styles/global.module.scss";
 import { BackgroundColor } from "@/shared/utils/theme/background.util";
+import styles from "../../styles/global.module.scss";
 
 export default function DashboardStoreScreen() {
   const router = useRouter();
