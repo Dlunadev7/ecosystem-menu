@@ -2,6 +2,7 @@ import { Counter } from '@/components';
 import { Cart, CartItem } from '@/shared/types';
 import { GenerateAvatar } from '@/shared/utils/avatars';
 import { useDevice } from '@/shared/utils/hooks/device';
+import { StoreEntity } from '@ecosystem-ar/sdk';
 import { Button, Flex, Modal, Paper, Space, Stack, Stepper, Text, Textarea, Title } from '@mantine/core';
 import dayjs from 'dayjs';
 import Image from 'next/image';
@@ -12,9 +13,10 @@ type OrderPreviewProps = {
   onRequestClose: () => void;
   order: Cart;
   onUpdateProductQuantity: (product: CartItem, quantity: number) => void
+  store: StoreEntity
 }
 
-export const OrderPreview = ({ opened, onRequestClose, order, onUpdateProductQuantity }: OrderPreviewProps) => {
+export const OrderPreview = ({ opened, onRequestClose, order, onUpdateProductQuantity, store }: OrderPreviewProps) => {
   const [active, setActive] = useState(0);
   const { isMobile } = useDevice();
   const [observations, setObservations] = useState(order.note);
@@ -50,7 +52,7 @@ export const OrderPreview = ({ opened, onRequestClose, order, onUpdateProductQua
     <Paper key={product.id} shadow="none" py="sm" style={{ borderBottom: '1px solid #00000010' }}>
       <Flex gap="sm" align="center" justify="space-between">
         <Image
-          src={product.images[0]?.uri || GenerateAvatar(product.name, 'avatar', true)}
+          src={product.images[0]?.uri || store.placeholder_image?.uri as string}
           width={50}
           height={50}
           alt={product.name}
