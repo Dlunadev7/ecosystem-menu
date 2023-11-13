@@ -1,0 +1,25 @@
+.tab_panel {
+  max-width: 1200px;
+  padding-top: 24px;
+  margin: auto;
+}
+
+.animated_card { 
+  width: 125px;
+  height: 125px;
+  // margin: 2rem auto;
+  position: relative; 
+}
+
+.animated_card img { 
+  position: absolute; 
+  width: 125px; 
+  box-shadow: 4px 4px 3px rgba(0, 0, 0, 0.2); 
+  transform-origin: center 40px; 
+}
+.animated_card img:first-child { 
+  transform: rotate(5deg);  
+}
+.animated_card img:last-child { 
+  transform: rotate(-5deg); 
+}

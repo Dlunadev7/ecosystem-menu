@@ -1,0 +1,53 @@
+.category_scroll_container {
+  position: sticky !important;
+  top: 0;
+  z-index: 100;
+  padding: 8px;
+}
+
+.tab_panel {
+  max-width: 1200px;
+  padding-top: 24px;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.tab_list {
+  display: flex;
+  flex-wrap: nowrap;
+  height: auto;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.tabs {
+  position: sticky !important;
+  top: 60px;
+  z-index: 1;
+}
+
+/* Hide the scrollbar for all browsers */
+.tab_list {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer and Microsoft Edge */
+}
+
+/* Hide the scrollbar for WebKit-based browsers (Chrome, Safari, etc.) */
+.tab_list::-webkit-scrollbar {
+  display: none;
+}
+
+.tab_list_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  @media screen and (min-width: 768px) {
+    width: 100%;
+  }
+}
+
+.footer {
+  margin: auto;
+  padding: 16px;
+  border-top: 1px solid #00000020;
+}
