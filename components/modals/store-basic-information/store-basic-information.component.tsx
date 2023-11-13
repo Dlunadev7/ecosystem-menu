@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { StoreEntity } from "@ecosystem-ar/sdk";
-import { Button, Group, LoadingOverlay, Modal, Stack, Text, TextInput, Textarea } from "@mantine/core";
+import { Button, Group, LoadingOverlay, Modal, NumberInput, Stack, Text, TextInput, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 import { useTenant } from "@/shared/hooks/tenant";
@@ -77,13 +77,14 @@ export function StoreBasicInformation({ store, opened, onRequestClose }: StoreBa
               disabled
             />
           </Group>
-          <TextInput
+          <NumberInput
             label="Número de teléfono"
             description="Se utilizara para tomar pedidos por WhatsApp"
             leftSection={<Text fz="sm" mx="sm">+54</Text>}
             placeholder="011 23456789"
+            hideControls
+            {...form.getInputProps("phone")}
             value={ValidatePhoneNumber(`${form.values.phone}`).national}
-            onChange={(event) => form.setFieldValue("phone", event.currentTarget.value)}
           />
           <TextInput
             withAsterisk
