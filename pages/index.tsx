@@ -7,14 +7,10 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { RouteEnum } from "@/shared/enums";
 import { Head } from "@components";
-import { useEffect } from "react";
-import { Analytics } from "@/shared/utils/analytics";
 
 export default function LandingPage() {
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const router = useRouter();
-  
-  useEffect(() => Analytics.onPageViewed(process.env.NEXT_PUBLIC_ECOSYSTEM_ANALYTICS_ID as string), [])
   
   return (
     <AppShell>
