@@ -3,7 +3,6 @@ import { AuthContext } from "@/context/auth/auth.context";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from '@mantine/notifications';
 import { ThemeContext, useTheme } from '@/context/theme/theme.context';
-import { Head } from '@components';
 
 import '@/styles/globals.css';
 import '@mantine/core/styles.css';

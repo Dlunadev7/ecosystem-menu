@@ -1,6 +1,7 @@
 import NHead from 'next/head';
 
 import { useTenant } from '@/shared/hooks/tenant';
+import Script from 'next/script';
 
 interface HeadProps {
   title?: string;
@@ -49,8 +50,7 @@ export function Head(props: HeadProps) {
       {/* Analytics */}
 
       {analytics && (
-        <script
-          id="analytics"
+        <Script
           async
           src={process.env.NEXT_PUBLIC_ECOSYSTEM_ANALYTICS_URI}
           data-website-id={analytics}
