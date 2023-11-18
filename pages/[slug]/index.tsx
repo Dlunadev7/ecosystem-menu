@@ -301,6 +301,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
           onRequestClose={() => setShowOrder(false)}
           opened={showOrder} order={cart}
           onUpdateProductQuantity={onUpdateQuantity}
+          store={store}
         />
 
         <PageUp right={100} />

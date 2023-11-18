@@ -35,7 +35,7 @@ function ProductPreview({ product, onRequestClose, onAddItemToCart, hasPhone, st
     notifications.show({
       title: "Añadido al carrito",
       message: `Se añadio ${product.name} x ${count}u a la orden.`,
-      icon: <Image priority component={NextImage} src={product.images[0]?.uri} alt={product.name} width={50} height={50} radius="lg" />,
+      icon: <Image priority component={NextImage} src={!Boolean(product.images.length) ? store?.placeholder_image?.uri :  product.images[0]?.uri } alt={product.name} width={50} height={50} radius="lg" />,
       withCloseButton: false,
       top: 60,
       styles: {
