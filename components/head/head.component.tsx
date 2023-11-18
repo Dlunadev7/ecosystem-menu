@@ -6,10 +6,11 @@ interface HeadProps {
   title?: string;
   description?: string;
   slug?: string;
+  analytics?: string;
 }
 
 export function Head(props: HeadProps) {
-  const { title = 'Dashboard', description, slug } = props;
+  const { title = 'Dashboard', description, slug, analytics } = props;
 
   const { favicon, host, logo } = useTenant();
   
@@ -44,6 +45,18 @@ export function Head(props: HeadProps) {
       <meta name="twitter:title" content="MenuQR - La solución digital de Ecosystem para tu local" />
       <meta name="twitter:description" content={description || "Optimiza la gestión de tu local con MenuQR de Ecosystem. Toma pedidos, ofrece opciones de Take Away, y más. ¡Regístrate gratis hoy!"} />
       <meta name="twitter:image" content="https://menu.ecosystem.com.ar/ogg.jpg" />
+
+      {/* Analytics */}
+
+      {analytics && (
+        <script
+          id="analytics"
+          async
+          src={process.env.NEXT_PUBLIC_ECOSYSTEM_ANALYTICS_URI}
+          data-website-id={analytics}
+          data-auto-track="false"
+        />
+      )}
     </NHead>
   )
 }

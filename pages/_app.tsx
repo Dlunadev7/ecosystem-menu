@@ -16,7 +16,6 @@ export function App({ Component, pageProps }: any) {
 
   return (
     <MantineProvider theme={theme} classNamesPrefix="ecosystem">
-      <Head />
       <AuthContext>
         <ModalsProvider>
           <Notifications position="top-right" />
