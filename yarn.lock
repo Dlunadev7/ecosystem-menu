@@ -74,10 +74,10 @@
     "@babel/helper-validator-identifier" "^7.22.19"
     to-fast-properties "^2.0.0"
 
-"@ecosystem-ar/sdk@^0.7.10":
-  version "0.7.10"
-  resolved "https://registry.yarnpkg.com/@ecosystem-ar/sdk/-/sdk-0.7.10.tgz#2c6818900aefeca8c5f54b693b31b8df568549cb"
-  integrity sha512-a4Me6fqzF4RpkzUcpiHa1LtCJrXheWEot3o29fF/pRKZG7D4/MZ2Zw63SowGDuZg4M9VpYcuYuYamUe4FS8kvA==
+"@ecosystem-ar/sdk@^0.8.10":
+  version "0.8.10"
+  resolved "https://registry.yarnpkg.com/@ecosystem-ar/sdk/-/sdk-0.8.10.tgz#5982d24671f639a5896acc78228d8069ca05cdb5"
+  integrity sha512-FDVt493ni014qA/c8NBsUYtPRQUXkUJluDIYvRwzumXzzNIFFcr8Ecwsu0UGjL5GDkSd8MlPtjSYD9sqSdqFdA==
 
 "@emotion/babel-plugin@^11.11.0":
   version "11.11.0"
