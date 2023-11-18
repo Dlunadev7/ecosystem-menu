@@ -54,7 +54,8 @@ export function Head(props: HeadProps) {
           async
           src={process.env.NEXT_PUBLIC_ECOSYSTEM_ANALYTICS_URI}
           data-website-id={analytics}
-          data-auto-track="false"
+          onReady={() => console.log(`tracking site on: ${analytics}`)}
+          onError={() => console.log(`Error tracking site on: ${analytics}`)}
         />
       )}
     </NHead>
