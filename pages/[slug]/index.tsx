@@ -40,6 +40,7 @@ import { Cart, CartItem } from "@/shared/types";
 import { Carousel } from "@mantine/carousel";
 import { useDevice } from "@/shared/utils/hooks/device";
 import { OrderPreview } from "@/components/modals/order-peview/order-preview.component";
+import { Analytics } from "@/shared/utils/analytics";
 
 const ProductPreview = dynamic(
   () => import("@/components/modals/product-preview/product-preview.component")
@@ -52,19 +53,11 @@ type StoreSpotlightProps = {
   theme: MantineTheme;
 };
 
-export default function StoreScreen({
-  store,
-  products,
-  categories,
-  theme,
-}: StoreSpotlightProps) {
+export default function StoreScreen({ store, products, categories, theme }: StoreSpotlightProps) {
   const router = useRouter();
-
   const { isDesktop } = useDevice();
 
-  const [productPreview, setProductPreview] = useState<ProductEntity | null>(
-    null
-  );
+  const [productPreview, setProductPreview] = useState<ProductEntity | null>(null);
   const [defaultTab, setDefaultTab] = useState("");
   const [showOrder, setShowOrder] = useState(false);
   const [cart, setCart] = useState<Cart>({
@@ -111,7 +104,13 @@ export default function StoreScreen({
   const onTabChange = (value: any) => {
     const store_slug = `/${router.query.slug}`;
     const query_params = { category: value };
-    
+
+    const category = categories.find(c => c.id === value);
+
+    if (category && store.analytics?.id) {
+      Analytics.onCategoryClicked(store.analytics.id, category);
+    }
+
     router.push(
       { pathname: store_slug, query: query_params },
       undefined,
@@ -187,13 +186,28 @@ export default function StoreScreen({
     backgroundColor: BackgroundColor(store.theme?.color.scheme),
   };
 
-    const autoplay = useRef(Autoplay({ delay: 5000 }));
+  const autoplay = useRef(Autoplay({ delay: 5000 }));
 
+  const onClickProduct = (product: ProductEntity) => {
+    if (store.analytics?.id) {
+      Analytics.onProductClicked(store.analytics.id, product);
+    }
+    onPreviewOpen(product);
+  }
+
+  useEffect(() => {
+    if (store.analytics?.id) Analytics.onPageViewed(store.analytics?.id);
+  }, [store.analytics])
 
   return (
     <MantineProvider classNamesPrefix="ecosystem" theme={theme} forceColorScheme={store.theme?.color.scheme}>
       <Container px={0} maw={980} style={{ margin: 'auto' }}>
-        <Head title={store.name} description={store.description} slug={store.slug} />
+        <Head
+          title={store.name}
+          description={store.description}
+          slug={store.slug}
+          analytics={store.analytics?.id}
+        />
         <Carousel
           slideSize="100%"
           slideGap="xs"
@@ -262,7 +276,14 @@ export default function StoreScreen({
               {[...categories, DEFAULT_CATEGORY].map((category) => (
                 <Tabs.Panel key={category.id} value={category.id}>
                   <SimpleGrid p={16} spacing="md" verticalSpacing="lg" cols={GRID_BREAKPOINTS} mb={64}>
-                    {MemoizedGroupedProducts[category.id]?.map((product) => <ProductListItem placeholder_image={store.placeholder_image?.uri || ""} key={product.id} product={product} onSelect={onPreviewOpen} />)}
+                    {MemoizedGroupedProducts[category.id]?.map((product) => (
+                      <ProductListItem
+                        placeholder_image={store.placeholder_image?.uri || ""}
+                        key={product.id}
+                        product={product}
+                        onSelect={() => onClickProduct(product)}
+                      />
+                    ))}
                   </SimpleGrid>
                 </Tabs.Panel>
               ))}
