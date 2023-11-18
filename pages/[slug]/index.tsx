@@ -107,9 +107,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
 
     const category = categories.find(c => c.id === value);
 
-    if (category && store.analytics?.id) {
-      Analytics.onCategoryClicked(store.analytics.id, category);
-    }
+    if (category) Analytics.onCategoryClicked(store.analytics.id, category);
 
     router.push(
       { pathname: store_slug, query: query_params },
@@ -189,9 +187,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
   const autoplay = useRef(Autoplay({ delay: 5000 }));
 
   const onClickProduct = (product: ProductEntity) => {
-    if (store.analytics?.id) {
-      Analytics.onProductClicked(store.analytics.id, product);
-    }
+    Analytics.onProductClicked(store.analytics.id, product);
     onPreviewOpen(product);
   }
 
