@@ -50,12 +50,10 @@ export function Head(props: HeadProps) {
       {/* Analytics */}
 
       {analytics && (
-        <Script
+        <script
           async
           src={process.env.NEXT_PUBLIC_ECOSYSTEM_ANALYTICS_URI}
           data-website-id={analytics}
-          onReady={() => console.log(`tracking site on: ${analytics}`)}
-          onError={() => console.log(`Error tracking site on: ${analytics}`)}
         />
       )}
     </NHead>
