@@ -195,9 +195,7 @@ export default function StoreScreen({ store, products, categories, theme }: Stor
     onPreviewOpen(product);
   }
 
-  useEffect(() => {
-    if (store.analytics?.id) Analytics.onPageViewed(store.analytics?.id);
-  }, [store.analytics])
+  useEffect(() => Analytics.onPageViewed(store.analytics?.id), []);
 
   return (
     <MantineProvider classNamesPrefix="ecosystem" theme={theme} forceColorScheme={store.theme?.color.scheme}>
