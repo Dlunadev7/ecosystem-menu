@@ -34,7 +34,7 @@ export function Head(props: HeadProps) {
       <meta key="keywords" name="keywords" content="MenuQR, Menú Digital, Restaurantes, Ecosystem, Gestión de Menús, Take Away, Reservas en Línea, Gestión de Locales"/>
       <meta key="language" httpEquiv="content-language" content="es-AR" />
       <meta key="tags" name="tags" content="MenuQR, Ecosystem, Menú Digital, Restaurantes, Take Away, Reservas en Línea, Gestión de Locales" />
-      <link key="canonical" rel="canonical" href="https://menu.ecosystem.com.ar" />
+      <link key="canonical" rel="canonical" href={`https://menu.ecosystem.com.ar${slug ? `/${slug}` : ""}`} />
       <meta key="og:type" property="og:type" content="website" />
       <meta key="og:title" property="og:title" content="MenuQR - La solución digital de Ecosystem para tu local" />
       <meta key="og:description" property="og:description" content={description || "Optimiza la gestión de tu local con MenuQR de Ecosystem. Toma pedidos, ofrece opciones de Take Away, y más. ¡Regístrate gratis hoy!"} />
