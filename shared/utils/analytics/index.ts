@@ -12,8 +12,8 @@ const onProductClicked = (website_id: string, product: ProductEntity) => {
 
   client.track(`product.clicked`, {
     website: website_id,
-    name: product.name,
-    id: product.id
+    product_name: product.name,
+    product_id: product.id
   });
 }
 
@@ -23,8 +23,8 @@ const onCategoryClicked = (website_id: string, category: CategoryEntity) => {
 
   client.track(`category.clicked`, {
     website: website_id,
-    name: category.name,
-    id: category.id
+    category_name: category.name,
+    category_id: category.id
   });
 }
 
