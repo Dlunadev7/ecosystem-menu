@@ -11,7 +11,6 @@ const onProductClicked = (website_id: string, product: ProductEntity) => {
   if (!client) return;
 
   client.track(`product.clicked`, {
-    website: website_id,
     name: product.name,
     id: product.id
   });
@@ -22,7 +21,6 @@ const onCategoryClicked = (website_id: string, category: CategoryEntity) => {
   if (!client) return;
 
   client.track(`category.clicked`, {
-    website: website_id,
     name: category.name,
     id: category.id
   });
@@ -47,7 +45,6 @@ const onProductCarouselUsed = (website_id: string, product: ProductEntity) => {
   if (!client) return;
 
   client.track(`product.carousel`, {
-    website: website_id,
     name: product.name,
     id: product.id
   });
@@ -58,7 +55,6 @@ const onStoreBannerUsed = (website_id: string, store: StoreEntity) => {
   if (!client) return;
 
   client.track(`store.banner`, {
-    website: website_id,
   });
 }
 
